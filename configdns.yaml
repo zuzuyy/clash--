@@ -1,7 +1,10 @@
-# DNS防泄露增强版
+# ========================================================
+# 完整增强版 configdns.yaml (防止DNS泄露版本)
+# ========================================================
+
 proxy-providers:
   Airport1:
-    url: "机场订阅填到这里"
+    url: "订阅地址"
     type: http
     interval: 86400
     health-check:
@@ -21,7 +24,7 @@ ipv6: false
 unified-delay: true
 tcp-concurrent: true
 log-level: warning
-global-client-fingerprint: chrome
+client-fingerprint: chrome
 keep-alive-idle: 600
 keep-alive-interval: 15
 profile:
@@ -98,6 +101,9 @@ proxy-groups:
   - {name: 💬 WhatsApp, type: select, proxies: [🚀 默认代理, 直连]}
   - {name: 🎵 TikTok, type: select, proxies: [🔯 日本故转, 🔯 狮城故转, 🔯 美国故转, 🌐 全部节点]}
 
+  # 谷歌服务
+  - {name: 🍀 Google, type: select, proxies: [🚀 默认代理, 🔯 香港故转, 🔯 日本故转, 🔯 狮城故转, 🔯 美国故转, 直连]}
+
   # 办公 & 购物 & 游戏
   - {name: 👨🏿‍💻 GitHub, type: select, proxies: [🚀 默认代理, 🌐 全部节点, 直连]}
   - {name: 🐬 OneDrive, type: select, proxies: [🚀 默认代理, 直连]}
@@ -106,7 +112,7 @@ proxy-groups:
   - {name: 🎮 Steam, type: select, proxies: [直连, 🚀 默认代理]}
   - {name: 💶 PayPal, type: select, proxies: [直连, 🔯 美国故转, 🔯 香港故转]}
 
-  # 节点自动筛选 (保留原配置)
+  # 节点自动筛选 (根据机场关键词)
   - {name: 🇭🇰 香港节点, type: select, include-all: true, filter: "(?=.*(港|HK|(?i)Hong))^((?!(台|日|韩|新|深|美)).)*$"}
   - {name: 🇯🇵 日本节点, type: select, include-all: true, filter: "(?=.*(日|JP|(?i)Japan))^((?!(港|台|韩|新|美)).)*$"}
   - {name: 🇸🇬 狮城节点, type: select, include-all: true, filter: "(?=.*(新加坡|坡|狮城|SG|Singapore))^((?!(台|日|韩|深|美)).)*$"}
@@ -119,46 +125,60 @@ proxy-groups:
   - {name: 🌐 全部节点, type: select, include-all: true}
 
 rules:
+  # 基础直连
   - RULE-SET,private_ip,直连,no-resolve
   - RULE-SET,private_domain,直连
-  # 指定域名
+  
+  # 特定域名及常见代理
   - DOMAIN-SUFFIX,qichiyu.com,🚀 默认代理
-  # 规则集匹配
   - RULE-SET,proxylite,🚀 默认代理
+  
+  # AI 相关
   - RULE-SET,ai,🤖 ChatGPT
   - RULE-SET,gemini,♊ Gemini
   - RULE-SET,perplexity,🟣 Perplexity
   - RULE-SET,grok,🗿 Grok
   - RULE-SET,meta_ai,♾️ Meta AI
+  
+  # 谷歌/微软/GitHub/Apple
   - RULE-SET,github_domain,👨🏿‍💻 GitHub
   - RULE-SET,youtube_domain,📹 YouTube
   - RULE-SET,google_domain,🍀 Google
   - RULE-SET,onedrive_domain,🐬 OneDrive
   - RULE-SET,microsoft_domain,🪟 Microsoft
   - RULE-SET,apple_domain,直连
+  
+  # 社交/短视频
   - RULE-SET,tiktok_domain,🎵 TikTok
   - RULE-SET,telegram_domain,📲 Telegram
+  - RULE-SET,facebook_domain,👥 Facebook/Meta
+  - RULE-SET,whatsapp_domain,💬 WhatsApp
+  
+  # 流媒体/流利听
   - RULE-SET,netflix_domain,🎥 NETFLIX
   - RULE-SET,disney_domain,🏰 Disney
   - RULE-SET,hbo_domain,🎬 HBO
-  - RULE-SET,amazon_domain,🛒 Amazon
-  - RULE-SET,facebook_domain,👥 Facebook/Meta
-  - RULE-SET,whatsapp_domain,💬 WhatsApp
   - RULE-SET,spotify_domain,🎵 Spotify
   - RULE-SET,twitch_domain,🟣 Twitch
+  
+  # 购物/支付/游戏
+  - RULE-SET,amazon_domain,🛒 Amazon
   - RULE-SET,steam_domain,🎮 Steam
   - RULE-SET,paypal_domain,💶 PayPal
-  # IP 段匹配
+  
+  # IP 相关
   - RULE-SET,apple_ip,直连
   - RULE-SET,google_ip,🍀 Google
   - RULE-SET,telegram_ip,📲 Telegram
   - RULE-SET,netflix_ip,🎥 NETFLIX
-  #兜底
+  
+  # 国内直连与兜底
   - RULE-SET,geolocation-!cn,🚀 默认代理
   - RULE-SET,cn_domain,直连
   - RULE-SET,cn_ip,直连
   - MATCH,🐟 漏网之鱼
 
+# 规则锚点
 rule-anchor:
   ip: &ip {type: http, interval: 86400, behavior: ipcidr, format: mrs}
   domain: &domain {type: http, interval: 86400, behavior: domain, format: mrs}
@@ -173,7 +193,7 @@ rule-providers:
   ai: { <<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/openai.mrs" }
   gemini: { <<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/google-gemini.mrs" }
   perplexity: { <<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/perplexity.mrs" }
-  grok: { <<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/grok.mrs" }
+  grok: { <<: *domain, url: "https://gh-proxy.com/raw.githubusercontent.com/liandu2024/clash/refs/heads/main/list/Grok.list" }
   meta_ai: { <<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/meta.mrs" }
   
   # Media
@@ -184,13 +204,13 @@ rule-providers:
   spotify_domain: { <<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/spotify.mrs"}
   twitch_domain: { <<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/twitch.mrs"}
   
-  # Social & Apps
+  # Social
   telegram_domain: { <<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/telegram.mrs"}
   facebook_domain: { <<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/facebook.mrs"}
   whatsapp_domain: { <<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/whatsapp.mrs"}
   tiktok_domain: { <<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/tiktok.mrs"}
   
-  # Web & Others
+  # Web & Systems
   google_domain: { <<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/google.mrs"}
   github_domain: { <<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/github.mrs"}
   onedrive_domain: { <<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/onedrive.mrs"}
@@ -200,7 +220,7 @@ rule-providers:
   steam_domain: { <<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/steam.mrs"}
   paypal_domain: { <<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/paypal.mrs"}
   
-  # Geo
+  # Geo Data
   geolocation-!cn: { <<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/geolocation-!cn.mrs"}
   cn_domain: { <<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/cn.mrs"}
   private_ip: {<<: *ip, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geoip/private.mrs"}
