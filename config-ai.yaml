@@ -60,6 +60,8 @@ dns:
   direct-nameserver:
     - https://dns.alidns.com/dns-query
     - https://doh.pub/dns-query
+    - 211.142.211.124
+    - 111.8.14.18
 
   fallback:
     - https://1.1.1.1/dns-query
