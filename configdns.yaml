@@ -83,11 +83,11 @@ proxy-groups:
   - {name: 🐟 漏网之鱼, type: select, proxies: [🚀 默认代理, 直连]}
   
   # AI 服务
-  - {name: 🤖 ChatGPT, type: select, proxies: [🔯 美国故转, 🔯 日本故转, 🔯 狮城故转, 🔯 香港故转, 🌐 全部节点]}
-  - {name: ♊ Gemini, type: select, proxies: [🔯 美国故转, 🔯 日本故转, 🔯 狮城故转, 🔯 香港故转, 🌐 全部节点]}
-  - {name: 🟣 Perplexity, type: select, proxies: [🔯 美国故转, 🔯 日本故转, 🔯 狮城故转, 🔯 香港故转, 🌐 全部节点]}
-  - {name: 🗿 Grok, type: select, proxies: [🔯 美国故转, 🔯 日本故转, 🔯 狮城故转, 🔯 香港故转, 🌐 全部节点]}
-  - {name: ♾️ Meta AI, type: select, proxies: [🔯 美国故转, 🔯 日本故转, 🔯 狮城故转, 🔯 香港故转, 🌐 全部节点]}
+  - {name: 🤖 ChatGPT, type: select, proxies: [🔯 美国故转, 🔯 日本故转, 🔯 狮城故转, 🔯 香港故转, ♻️ 自动选择]}
+  - {name: ♊ Gemini, type: select, proxies: [🔯 美国故转, 🔯 日本故转, 🔯 狮城故转, 🔯 香港故转, ♻️ 自动选择]}
+  - {name: 🟣 Perplexity, type: select, proxies: [🔯 美国故转, 🔯 日本故转, 🔯 狮城故转, 🔯 香港故转, ♻️ 自动选择]}
+  - {name: 🗿 Grok, type: select, proxies: [🔯 美国故转, 🔯 日本故转, 🔯 狮城故转, 🔯 香港故转, ♻️ 自动选择]}
+  - {name: ♾️ Meta AI, type: select, proxies: [🔯 美国故转, 🔯 日本故转, 🔯 狮城故转, 🔯 香港故转, ♻️ 自动选择]}
 
   # 视频 & 媒体
   - {name: 📹 YouTube, type: select, proxies: [🔯 美国故转, 🔯 香港故转, 🔯 日本故转, 🔯 狮城故转, ♻️ 自动选择]}
@@ -99,15 +99,15 @@ proxy-groups:
 
   # 社交 & 通讯
   - {name: 📲 Telegram, type: select, proxies: [🔯 香港故转, 🔯 狮城故转, 🔯 美国故转, ♻️ 自动选择]}
-  - {name: 👥 Facebook/Meta, type: select, proxies: [🚀 默认代理, 🌐 全部节点]}
-  - {name: 💬 WhatsApp, type: select, proxies: [🚀 默认代理, 直连]}
-  - {name: 🎵 TikTok, type: select, proxies: [🔯 日本故转, 🔯 狮城故转, 🔯 美国故转, 🔯 香港故转, 🌐 全部节点]}
+  - {name: 👥 Facebook/Meta, type: select, proxies: [🚀 默认代理, ♻️ 自动选择]}
+  - {name: 💬 WhatsApp, type: select, proxies: [🚀 默认代理, ♻️ 自动选择, 直连]}
+  - {name: 🎵 TikTok, type: select, proxies: [🔯 日本故转, 🔯 狮城故转, 🔯 美国故转, 🔯 香港故转, ♻️ 自动选择]}
 
   # 谷歌服务
   - {name: 🍀 Google, type: select, proxies: [🚀 默认代理, 🔯 香港故转, 🔯 日本故转, 🔯 狮城故转, 🔯 美国故转, 直连]}
 
   # 办公 & 购物 & 游戏
-  - {name: 👨🏿‍💻 GitHub, type: select, proxies: [🚀 默认代理, 🌐 全部节点, 直连]}
+  - {name: 👨🏿‍💻 GitHub, type: select, proxies: [🚀 默认代理, ♻️ 自动选择, 直连]}
   - {name: 🐬 OneDrive, type: select, proxies: [🚀 默认代理, 直连]}
   - {name: 🪟 Microsoft, type: select, proxies: [🚀 默认代理, 直连]}
   - {name: 🛒 Amazon, type: select, proxies: [🚀 默认代理, 直连]}
