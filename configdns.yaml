@@ -1,5 +1,5 @@
 # ========================================================
-# 完整增强版 configdns.yaml (防止DNS泄露版本)
+# 深度优化增强版 configdns.yaml (高性能 & 防泄露)
 # ========================================================
 
 proxy-providers:
@@ -16,7 +16,7 @@ proxy-providers:
 proxies:
   - {name: 直连, type: direct}
 
-# 全局配置
+# 全局配置优化
 mixed-port: 7890
 allow-lan: true
 bind-address: "*"
@@ -25,6 +25,8 @@ unified-delay: true
 tcp-concurrent: true
 log-level: warning
 client-fingerprint: chrome
+udp: true # 开启 UDP 支持
+endpoint-independent-forwarding: true # 增强 NAT 兼容性
 keep-alive-idle: 600
 keep-alive-interval: 15
 profile:
@@ -44,14 +46,15 @@ sniffer:
   skip-domain:
     - "Mijia Cloud"
     - "+.push.apple.com"
+    - "+.apple.com"
 
 tun:
   enable: true
   stack: mixed
   dns-hijack: ["any:53", "tcp://any:53"]
-  auto-route: false
+  auto-route: true # 建议开启以自动接管路由
+  auto-detect-interface: true # 自动检测网卡
   auto-redirect: false
-  auto-detect-interface: false
 
 dns:
   enable: true
@@ -62,23 +65,23 @@ dns:
   enhanced-mode: fake-ip
   fake-ip-range: 28.0.0.1/8
   fake-ip-filter-mode: blacklist
+  # 启动 DNS：使用 IP 跳过域名递归
   default-nameserver:
-    - https://223.5.5.5/dns-query
+    - 223.5.5.5
+    - 119.29.29.29
+    - 1.1.1.1
+  # 代理服务器域名解析
   proxy-server-nameserver:
     - https://dns.alidns.com/dns-query
-    - https://doh.pub/dns-query
-  direct-nameserver:
-    - https://dns.alidns.com/dns-query
-    - https://doh.pub/dns-query
-    - 211.142.211.124
-    - 111.8.14.18
+  # 核心解析策略：强制国内 DOH 走直连，国外 DOH 走代理
   nameserver:
-    - https://8.8.8.8/dns-query#RULES&ecs=223.5.5.0/24
+    - https://dns.alidns.com/dns-query#直连
+    - https://doh.pub/dns-query#直连
+    - https://8.8.8.8/dns-query#🚀 默认代理&ecs=223.5.5.0/24
   fake-ip-filter:
     - "rule-set:fakeipfilter_domain"
 
 proxy-groups:
-  # 基础分流
   - {name: 🚀 默认代理, type: select, proxies: [🔯 香港故转, 🔯 台湾故转, 🔯 日本故转, 🔯 狮城故转, 🔯 美国故转, ♻️ 自动选择, 🌐 全部节点, 直连]}
   - {name: 🐟 漏网之鱼, type: select, proxies: [🚀 默认代理, ♻️ 自动选择, 🌐 全部节点]}
   
@@ -114,51 +117,49 @@ proxy-groups:
   - {name: 🎮 Steam, type: select, proxies: [直连, 🔯 日本故转, 🔯 台湾故转, 🔯 狮城故转, 🔯 美国故转, 🔯 香港故转, ♻️ 自动选择, 🌐 全部节点]}
   - {name: 💶 PayPal, type: select, proxies: [直连, 🔯 日本故转, 🔯 台湾故转, 🔯 狮城故转, 🔯 美国故转, 🔯 香港故转, ♻️ 自动选择, 🌐 全部节点]}
 
-  # 节点自动筛选 (根据机场关键词)
-  - {name: 🇭🇰 香港节点, type: select, include-all: true, filter: "(?=.*(HK|香港|hk|Hong Kong|HongKong))^((?!(台|日|韩|深|美)).)*$"}
-  - {name: 🇹🇼 台湾节点, type: select, include-all: true, filter: "(?=.*(台湾|台灣|TW|Tai Wan|🇹🇼|🇨🇳|TaiWan|Taiwan))^((?!(港|日|韩|深|美)).)*$"}
-  - {name: 🇯🇵 日本节点, type: select, include-all: true, filter: "(?=.*(日|JP|(?i)Japan))^((?!(港|台|韩|新|美)).)*$"}
-  - {name: 🇸🇬 狮城节点, type: select, include-all: true, filter: "(?=.*(新加坡|坡|狮城|SG|Singapore))^((?!(台|日|韩|深|美)).)*$"}
-  - {name: 🇺🇲 美国节点, type: select, include-all: true, filter: "(?=.*(美|US|(?i)States|America))^((?!(港|台|韩|新|日)).)*$"}
-  - {name: 🔯 香港故转, type: fallback, include-all: true, interval: 300, filter: "(?=.*(HK|香港|hk|Hong Kong|HongKong))^((?!(台|日|韩|深|美)).)*$"}
-  - {name: 🔯 台湾故转, type: fallback, include-all: true, interval: 300, filter: "(?=.*(台湾|台灣|TW|Tai Wan|🇹🇼|🇨🇳|TaiWan|Taiwan))^((?!(台|日|韩|深|美)).)*$"}
-  - {name: 🔯 日本故转, type: fallback, include-all: true, interval: 300, filter: "(?=.*(日本|JP|Japan|jp))^((?!(台|日|韩|深|美)).)*$"}
-  - {name: 🔯 狮城故转, type: fallback, include-all: true, interval: 300, filter: "(?=.*(新加坡|坡|狮城|SG|Singapore))^((?!(台|日|韩|深|美)).)*$"}
-  - {name: 🔯 美国故转, type: fallback, include-all: true, interval: 300, filter: "(?=.*(美|US|(?i)States|America))^((?!(港|台|韩|新|日)).)*$"}
+  # 节点自动筛选
+  - {name: 🇭🇰 香港节点, type: select, include-all: true, filter: "(?i)HK|香港|Hong Kong|HongKong"}
+  - {name: 🇹🇼 台湾节点, type: select, include-all: true, filter: "(?i)TW|台湾|台灣|Tai Wan|TaiWan"}
+  - {name: 🇯🇵 日本节点, type: select, include-all: true, filter: "(?i)JP|日本|Japan"}
+  - {name: 🇸🇬 狮城节点, type: select, include-all: true, filter: "(?i)SG|新加坡|狮城|Singapore"}
+  - {name: 🇺🇲 美国节点, type: select, include-all: true, filter: "(?i)US|美国|America|States"}
+  - {name: 🔯 香港故转, type: fallback, include-all: true, interval: 300, filter: "(?i)HK|香港|Hong Kong|HongKong"}
+  - {name: 🔯 台湾故转, type: fallback, include-all: true, interval: 300, filter: "(?i)TW|台湾|台灣|Tai Wan|TaiWan"}
+  - {name: 🔯 日本故转, type: fallback, include-all: true, interval: 300, filter: "(?i)JP|日本|Japan"}
+  - {name: 🔯 狮城故转, type: fallback, include-all: true, interval: 300, filter: "(?i)SG|新加坡|狮城|Singapore"}
+  - {name: 🔯 美国故转, type: fallback, include-all: true, interval: 300, filter: "(?i)US|美国|America|States"}
   - {name: ♻️ 自动选择, type: url-test, include-all: true, tolerance: 20, interval: 300, filter: "^((?!(直连)).)*$"}
   - {name: 🌐 全部节点, type: select, include-all: true}
 
 rules:
-  # 基础直连
+  # 基础直连 (高优先级)
   - RULE-SET,private_ip,直连,no-resolve
   - RULE-SET,private_domain,直连
   
-  # 特定域名及常见代理
-  - DOMAIN-SUFFIX,qichiyu.com,🚀 默认代理
-  - RULE-SET,proxylite,🚀 默认代理
-  
-  # AI 相关
+  # AI 相关 (按需前置)
   - RULE-SET,ai,🤖 ChatGPT
   - RULE-SET,gemini,♊ Gemini
   - RULE-SET,perplexity,🟣 Perplexity
   - RULE-SET,grok,🗿 Grok
   - RULE-SET,meta_ai,♾️ Meta AI
   
-  # 谷歌/微软/GitHub/Apple
-  - RULE-SET,github_domain,👨🏿‍💻 GitHub
+  # 谷歌/社交 (常用服务)
+  - RULE-SET,telegram_domain,📲 Telegram
   - RULE-SET,youtube_domain,📹 YouTube
   - RULE-SET,google_domain,🍀 Google
+  
+  # 系统与办公
+  - RULE-SET,github_domain,👨🏿‍💻 GitHub
   - RULE-SET,onedrive_domain,🐬 OneDrive
   - RULE-SET,microsoft_domain,🪟 Microsoft
   - RULE-SET,apple_domain,直连
   
   # 社交/短视频
   - RULE-SET,tiktok_domain,🎵 TikTok
-  - RULE-SET,telegram_domain,📲 Telegram
   - RULE-SET,facebook_domain,👥 Facebook/Meta
   - RULE-SET,whatsapp_domain,💬 WhatsApp
   
-  # 流媒体/流利听
+  # 流媒体
   - RULE-SET,netflix_domain,🎥 NETFLIX
   - RULE-SET,disney_domain,🏰 Disney
   - RULE-SET,hbo_domain,🎬 HBO
@@ -170,16 +171,16 @@ rules:
   - RULE-SET,steam_domain,🎮 Steam
   - RULE-SET,paypal_domain,💶 PayPal
   
-  # IP 相关
-  - RULE-SET,apple_ip,直连
-  - RULE-SET,google_ip,🍀 Google
-  - RULE-SET,telegram_ip,📲 Telegram
-  - RULE-SET,netflix_ip,🎥 NETFLIX
+  # IP 相关 (全部添加 no-resolve 提高效率)
+  - RULE-SET,apple_ip,直连,no-resolve
+  - RULE-SET,google_ip,🍀 Google,no-resolve
+  - RULE-SET,telegram_ip,📲 Telegram,no-resolve
+  - RULE-SET,netflix_ip,🎥 NETFLIX,no-resolve
   
   # 国内直连与兜底
   - RULE-SET,geolocation-!cn,🚀 默认代理
   - RULE-SET,cn_domain,直连
-  - RULE-SET,cn_ip,直连
+  - RULE-SET,cn_ip,直连,no-resolve
   - MATCH,🐟 漏网之鱼
 
 # 规则锚点
