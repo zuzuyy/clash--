@@ -118,7 +118,7 @@ proxy-groups:
 
   - {name: 🪟 Microsoft, type: select, proxies: [DIRECT, 🚀 默认代理]}
 
-  - {name: 👨🏿‍💻 GitHub, type: select, proxies: [♻️ 自动选择, 🚀 默认代理, DIRECT]}
+  - {name: 👨🏿‍💻 GitHub, type: select, proxies: [♻️ 自动选择, 🔯 香港故转, 🔯 美国故转, 🔯 台湾故转, 🔯 狮城故转, DIRECT]}
   
   # 👇 针对您的疑问：Steam/PayPal 默认走这个低延迟自动组或直连
   - {name: 🎮 Steam, type: select, proxies: [DIRECT, ♻️ 自动选择, 🔯 香港故转, 🔯 美国故转, 🔯 台湾故转, 🔯 狮城故转, 🚀 默认代理]}
