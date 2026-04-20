@@ -25,14 +25,41 @@ tcp-concurrent: true
 # 4. DNS 配置 (防泄露优化)
 dns:
   enable: true
+  cache-algorithm: arc
+  listen: 0.0.0.0:1053  # 确保与 OpenClash 设置一致
   ipv6: false
+  respect-rules: true
   enhanced-mode: fake-ip
   fake-ip-range: 28.0.0.1/8
-  respect-rules: true
+  
+  # 1. 解决冷启动问题：解析 DNS 自身的域名和机场域名
+  default-nameserver:
+    - 223.5.5.5
+    - 119.29.29.29
+    - 1.1.1.1
+  proxy-server-nameserver:
+    - https://dns.alidns.com/dns-query
+
+  # 2. 核心分流：国内 DOH 直连，国外 DOH 代理
   nameserver:
     - https://dns.alidns.com/dns-query#DIRECT
     - https://doh.pub/dns-query#DIRECT
     - https://8.8.8.8/dns-query#🚀 默认代理&ecs=223.5.5.0/24
+
+  # 3. 基础兼容性过滤 (解决内网与测速问题)
+  fake-ip-filter:
+    - "*.lan"
+    - "*.localdomain"
+    - "*.example"
+    - "*.invalid"
+    - "*.localhost"
+    - "*.test"
+    - "*.local"
+    - "*.home.arpa"
+    - "msftconnecttest.com"
+    - "msftncsi.com"
+    - "connectivitycheck.gstatic.com"
+    - "+.speedtest.net"
 
 # 5. 代理策略组 (核心变动部分)
 proxy-groups:
