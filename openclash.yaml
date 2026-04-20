@@ -78,7 +78,7 @@ proxy-groups:
   
   - {name: 🎬 HBO, type: select, proxies: [♻️ 自动选择, 🔯 香港故转, 🔯 美国故转, 🔯 台湾故转, 🔯 狮城故转, DIRECT]}
 
-  - {name: 🎬 Prime Video, type: select, proxies: [♻️ 自动选择, 🔯 香港故转, 🔯 美国故转, 🔯 台湾故转, 🔯 狮城故转, DIRECT]}
+  - {name: 🎬 PrimeVideo, type: select, proxies: [♻️ 自动选择, 🔯 香港故转, 🔯 美国故转, 🔯 台湾故转, 🔯 狮城故转, DIRECT]}
 
   - {name: 🎵 Spotify, type: select, proxies: [♻️ 自动选择, 🔯 香港故转, 🔯 美国故转, 🔯 台湾故转, 🔯 狮城故转, DIRECT]}
 
@@ -114,7 +114,7 @@ rules:
   - RULE-SET,Netflix_domain,🎥 NETFLIX
   - RULE-SET,Disney_domain,🏰 Disney
   - RULE-SET,HBO_domain,🎬 HBO
-  - RULE-SET,Primevideo_domain,🎬 Prime Video
+  - RULE-SET,PrimeVideo_domain,🎬 PrimeVideo
   - RULE-SET,Spotify_domain,🎵 Spotify
   - RULE-SET,Tiktok_domain,🎵 TikTok
   
@@ -141,7 +141,7 @@ rule-providers:
   Netflix_domain: { <<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/netflix.mrs"}
   Disney_domain: { <<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/disney.mrs"}
   HBO_domain: { <<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/hbo.mrs"}
-  Prime Video_domain: { <<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/primevideo.mrs"}
+  PrimeVideo_domain: { <<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/primevideo.mrs"}
   Tiktok_domain: { <<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/tiktok.mrs"}
   Spotify_domain: { <<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/spotify.mrs"}
   
