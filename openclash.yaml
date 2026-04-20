@@ -51,7 +51,7 @@ proxy-groups:
   
   - {name: 🎬 HBO, type: select, proxies: [♻️ 自动选择, 🔯 香港故转, 🔯 美国故转, 🔯 台湾故转, 🔯 狮城故转, DIRECT]}
 
-  - {name: 🎬 primevideo, type: select, proxies: [♻️ 自动选择, 🔯 香港故转, 🔯 美国故转, 🔯 台湾故转, 🔯 狮城故转, DIRECT]}
+  - {name: 🎬 Prime Video, type: select, proxies: [♻️ 自动选择, 🔯 香港故转, 🔯 美国故转, 🔯 台湾故转, 🔯 狮城故转, DIRECT]}
 
   - {name: 🎵 Spotify, type: select, proxies: [♻️ 自动选择, 🔯 香港故转, 🔯 美国故转, 🔯 台湾故转, 🔯 狮城故转, DIRECT]}
 
@@ -62,9 +62,9 @@ proxy-groups:
   - {name: 👨🏿‍💻 GitHub, type: select, proxies: [♻️ 自动选择, 🚀 默认代理, DIRECT]}
   
   # 👇 针对您的疑问：Steam/PayPal 默认走这个低延迟自动组或直连
-  - {name: 🎮 游戏, type: select, proxies: [DIRECT, ♻️ 自动选择, 🔯 香港故转, 🔯 美国故转, 🔯 台湾故转, 🔯 狮城故转, 🚀 默认代理]}
+  - {name: 🎮 Steam, type: select, proxies: [DIRECT, ♻️ 自动选择, 🔯 香港故转, 🔯 美国故转, 🔯 台湾故转, 🔯 狮城故转, 🚀 默认代理]}
 
-  - {name: 💶 支付, type: select, proxies: [DIRECT, ♻️ 自动选择, 🔯 香港故转, 🔯 美国故转, 🔯 台湾故转, 🔯 狮城故转, 🚀 默认代理]}
+  - {name: 💶 Paypal, type: select, proxies: [DIRECT, ♻️ 自动选择, 🔯 香港故转, 🔯 美国故转, 🔯 台湾故转, 🔯 狮城故转, 🚀 默认代理]}
 
   # 地区节点自动筛选
   - {name: 🔯 香港故转, type: fallback, include-all: true, filter: "(?i)HK|香港", interval: 300}
@@ -80,26 +80,26 @@ rules:
   - RULE-SET,private_ip,DIRECT,no-resolve
   - RULE-SET,private_domain,DIRECT
   # AI
-  - RULE-SET,ai,🤖 AI服务
-  - RULE-SET,gemini,🤖 AI服务
+  - RULE-SET,AI,🤖 AI服务
+  - RULE-SET,Gemini,🤖 AI服务
   # 流媒体分流 (全平台覆盖)
-  - RULE-SET,youtube_domain,📹 YouTube
-  - RULE-SET,netflix_domain,🎥 NETFLIX
-  - RULE-SET,disney_domain,🏰 Disney
-  - RULE-SET,hbo_domain,🎬 HBO
-  - RULE-SET,primevideo_domain,🎬 primevideo
-  - RULE-SET,spotify_domain,🎵 Spotify
-  - RULE-SET,tiktok_domain,🎵 TikTok
+  - RULE-SET,Youtube_domain,📹 YouTube
+  - RULE-SET,Netflix_domain,🎥 NETFLIX
+  - RULE-SET,Disney_domain,🏰 Disney
+  - RULE-SET,HBO_domain,🎬 HBO
+  - RULE-SET,Primevideo_domain,🎬 Prime Video
+  - RULE-SET,Spotify_domain,🎵 Spotify
+  - RULE-SET,Tiktok_domain,🎵 TikTok
   
   # 社交与系统
-  - RULE-SET,telegram_domain,🚀 默认代理
-  - RULE-SET,google_domain,🚀 默认代理
-  - RULE-SET,apple_domain,DIRECT
-  - RULE-SET,gitHub_domain,👨🏿‍💻 GitHub
-  - RULE-SET,microsoft_domain,🪟 Microsoft
+  - RULE-SET,Telegram_domain,🚀 默认代理
+  - RULE-SET,Google_domain,🚀 默认代理
+  - RULE-SET,Apple_domain,DIRECT
+  - RULE-SET,GitHub_domain,👨🏿‍💻 GitHub
+  - RULE-SET,Microsoft_domain,🪟 Microsoft
   # 游戏与支付
-  - RULE-SET,steam_domain,🎮 游戏
-  - RULE-SET,paypal_domain,💶 支付
+  - RULE-SET,Steam_domain,🎮 Steam
+  - RULE-SET,Paypal_domain,💶 Paypal
   # 国内直连
   - RULE-SET,cn_domain,DIRECT
   - RULE-SET,cn_ip,DIRECT,no-resolve
@@ -107,24 +107,24 @@ rules:
 
 # 7. 规则提供者
 rule-providers:
-  ai: { <<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/openai.mrs" }
-  gemini: { <<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/google-gemini.mrs" }
+  AI: { <<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/openai.mrs" }
+  Gemini: { <<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/google-gemini.mrs" }
   # 流媒体规则集
-  youtube_domain: { <<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/youtube.mrs"}
-  netflix_domain: { <<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/netflix.mrs"}
-  disney_domain: { <<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/disney.mrs"}
-  hbo_domain: { <<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/hbo.mrs"}
-  primevideo_domain: { <<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/primevideo.mrs"}
-  tiktok_domain: { <<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/tiktok.mrs"}
-  spotify_domain: { <<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/spotify.mrs"}
+  Youtube_domain: { <<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/youtube.mrs"}
+  Netflix_domain: { <<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/netflix.mrs"}
+  Disney_domain: { <<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/disney.mrs"}
+  HBO_domain: { <<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/hbo.mrs"}
+  Prime Video_domain: { <<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/primevideo.mrs"}
+  Tiktok_domain: { <<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/tiktok.mrs"}
+  Spotify_domain: { <<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/spotify.mrs"}
   
-  telegram_domain: { <<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/telegram.mrs"}
-  google_domain: { <<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/google.mrs"}
-  apple_domain: { <<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/apple.mrs"}
-  microsoft_domain: { <<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/microsoft.mrs"}
-  github_domain: { <<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/github.mrs"}
-  steam_domain: { <<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/steam.mrs"}
-  paypal_domain: { <<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/paypal.mrs"}
+  Telegram_domain: { <<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/telegram.mrs"}
+  Google_domain: { <<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/google.mrs"}
+  Apple_domain: { <<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/apple.mrs"}
+  Microsoft_domain: { <<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/microsoft.mrs"}
+  Github_domain: { <<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/github.mrs"}
+  Steam_domain: { <<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/steam.mrs"}
+  Paypal_domain: { <<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/paypal.mrs"}
   
   cn_domain: { <<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/cn.mrs"}
   private_domain: { <<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/private.mrs"}
