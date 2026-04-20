@@ -36,7 +36,7 @@ dns:
 
 # 5. 代理策略组 (核心变动部分)
 proxy-groups:
-  - {name: 🚀 默认代理, type: select, proxies: [♻️ 自动选择, 🔯 香港故转, 🔯 美国故转, 🔯 台湾故转, 🔯 狮城故转, DIRECT]}
+  - {name: 🚀 默认代理, type: select, proxies: [♻️ 自动选择, 🔯 香港故转, 🔯 美国故转, 🔯 台湾故转, 🔯 狮城故转, 🌐 全部节点]}
   
   - {name: ♻️ 自动选择, type: url-test, include-all: true, interval: 300, tolerance: 50}
   
@@ -72,8 +72,8 @@ proxy-groups:
   - {name: 🔯 狮城故转, type: fallback, include-all: true, filter: "(?i)SG|新加坡|狮城", interval: 300}
   - {name: 🔯 台湾故转, type: fallback, include-all: true, filter: "(?i)TW|台湾", interval: 300}
   - {name: 🔯 日本故转, type: fallback, include-all: true, filter: "(?i)JP|日本", interval: 300}
-  
-  - {name: 🐟 漏网之鱼, type: select, proxies: [🚀 默认代理, DIRECT]}
+  - {name: 🌐 全部节点, type: select, include-all: true}
+  - {name: 🐟 漏网之鱼, type: select, proxies: [🚀 默认代理, 🌐 全部节点]}
 
 # 6. 规则路由
 rules:
