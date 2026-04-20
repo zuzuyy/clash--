@@ -15,12 +15,44 @@ proxy-providers:
     url: "您的机场订阅地址" 
 
 # 3. 基础设置
-client-fingerprint: chrome
 mixed-port: 7890
 allow-lan: true
-ipv6: false 
+bind-address: "*"
+ipv6: false
 unified-delay: true
 tcp-concurrent: true
+log-level: warning
+client-fingerprint: chrome
+udp: true # 开启 UDP 支持
+endpoint-independent-forwarding: true # 增强 NAT 兼容性
+keep-alive-idle: 600
+keep-alive-interval: 15
+profile:
+  store-selected: true
+  store-fake-ip: true
+
+sniffer:
+  enable: true
+  sniff:
+    HTTP:
+      ports: [80, 8080-8880]
+      override-destination: true
+    TLS:
+      ports: [443, 8443]
+    QUIC:
+      ports: [443, 8443]
+  skip-domain:
+    - "Mijia Cloud"
+    - "+.push.apple.com"
+    - "+.apple.com"
+
+tun:
+  enable: true
+  stack: mixed
+  dns-hijack: ["any:53", "tcp://any:53"]
+  auto-route: true # 建议开启以自动接管路由
+  auto-detect-interface: true # 自动检测网卡
+  auto-redirect: false
 
 # 4. DNS 配置 (防泄露优化)
 dns:
