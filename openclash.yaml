@@ -101,8 +101,8 @@ dns:
 
 # 代理节点订阅配置
 proxy-providers:
-  Airport1:
-    url: "你的订阅地址"       # 替换为实际订阅地址
+  红杏云:
+    url: "订阅地址"       # 替换为实际订阅地址
     type: http
     interval: 86400         # 24小时更新一次
     health-check:
@@ -135,7 +135,7 @@ proxy-groups:
       - ♻️ 自动选择
       - 🌐 全部节点
       - 直连
-    icon: "🚀"
+    
 
   - name: 🐟 漏网之鱼
     type: select
@@ -143,7 +143,7 @@ proxy-groups:
       - 🚀 默认代理
       - ♻️ 自动选择
       - 🌐 全部节点
-    icon: "🐟"
+    
 
   # AI服务专用组
   - name: 🤖 ChatGPT
@@ -156,7 +156,7 @@ proxy-groups:
       - 🔯 香港故转
       - ♻️ 自动选择
       - 🌐 全部节点
-    icon: "🤖"
+    
 
   - name: ♊ Gemini
     type: select
@@ -168,7 +168,7 @@ proxy-groups:
       - 🔯 香港故转
       - ♻️ 自动选择
       - 🌐 全部节点
-    icon: "♊"
+    
 
   - name: 🟣 Perplexity
     type: select
@@ -180,7 +180,7 @@ proxy-groups:
       - 🔯 香港故转
       - ♻️ 自动选择
       - 🌐 全部节点
-    icon: "🟣"
+    
 
   - name: 🗿 Grok
     type: select
@@ -192,7 +192,7 @@ proxy-groups:
       - 🔯 香港故转
       - ♻️ 自动选择
       - 🌐 全部节点
-    icon: "🗿"
+    
 
   - name: ♾️ Meta AI
     type: select
@@ -204,7 +204,7 @@ proxy-groups:
       - 🔯 香港故转
       - ♻️ 自动选择
       - 🌐 全部节点
-    icon: "♾️"
+    
 
   # 视频媒体专用组
   - name: 📹 YouTube
@@ -217,7 +217,7 @@ proxy-groups:
       - 🔯 狮城故转
       - ♻️ 自动选择
       - 🌐 全部节点
-    icon: "📹"
+    
 
   - name: 🎥 NETFLIX
     type: select
@@ -229,7 +229,7 @@ proxy-groups:
       - 🔯 美国故转
       - ♻️ 自动选择
       - 🌐 全部节点
-    icon: "🎥"
+    
 
   - name: 🏰 Disney
     type: select
@@ -240,7 +240,7 @@ proxy-groups:
       - 🔯 狮城故转
       - ♻️ 自动选择
       - 🌐 全部节点
-    icon: "🏰"
+    
 
   - name: 🎬 HBO
     type: select
@@ -251,7 +251,7 @@ proxy-groups:
       - 🔯 狮城故转
       - ♻️ 自动选择
       - 🌐 全部节点
-    icon: "🎬"
+    
 
   - name: 🟣 Twitch
     type: select
@@ -259,7 +259,7 @@ proxy-groups:
       - 🚀 默认代理
       - ♻️ 自动选择
       - 🌐 全部节点
-    icon: "🟣"
+    
 
   - name: 🎵 Spotify
     type: select
@@ -268,7 +268,7 @@ proxy-groups:
       - ♻️ 自动选择
       - 🌐 全部节点
       - 直连
-    icon: "🎵"
+    
 
   # 社交通讯专用组
   - name: 📲 Telegram
@@ -281,7 +281,7 @@ proxy-groups:
       - 🔯 美国故转
       - ♻️ 自动选择
       - 🌐 全部节点
-    icon: "📲"
+    
 
   - name: 👥 Facebook/Meta
     type: select
@@ -294,7 +294,7 @@ proxy-groups:
       - 🔯 美国故转
       - ♻️ 自动选择
       - 🌐 全部节点
-    icon: "👥"
+    
 
   - name: 💬 WhatsApp
     type: select
@@ -307,7 +307,7 @@ proxy-groups:
       - 🔯 美国故转
       - ♻️ 自动选择
       - 🌐 全部节点
-    icon: "💬"
+    
 
   - name: 🎵 TikTok
     type: select
@@ -319,7 +319,7 @@ proxy-groups:
       - 🔯 香港故转
       - ♻️ 自动选择
       - 🌐 全部节点
-    icon: "🎵"
+    
 
   # 谷歌服务专用组
   - name: 🍀 Google
@@ -333,7 +333,7 @@ proxy-groups:
       - 🔯 美国故转
       - 🌐 全部节点
       - 直连
-    icon: "🍀"
+    
 
   # 办公/购物/游戏专用组
   - name: 👨🏿‍💻 GitHub
@@ -343,7 +343,7 @@ proxy-groups:
       - ♻️ 自动选择
       - 🌐 全部节点
       - 直连
-    icon: "👨🏿‍💻"
+    
 
   - name: 🐬 OneDrive
     type: select
@@ -351,7 +351,7 @@ proxy-groups:
       - 直连
       - 🚀 默认代理
       - 🌐 全部节点
-    icon: "🐬"
+    
 
   - name: 🪟 Microsoft
     type: select
@@ -359,7 +359,7 @@ proxy-groups:
       - 直连
       - 🚀 默认代理
       - 🌐 全部节点
-    icon: "🪟"
+    
 
   - name: 🛒 Amazon
     type: select
@@ -372,7 +372,7 @@ proxy-groups:
       - ♻️ 自动选择
       - 🌐 全部节点
       - 直连
-    icon: "🛒"
+    
 
   - name: 🎮 Steam
     type: select
@@ -385,7 +385,7 @@ proxy-groups:
       - 🔯 香港故转
       - ♻️ 自动选择
       - 🌐 全部节点
-    icon: "🎮"
+    
 
   - name: 💶 PayPal
     type: select
@@ -398,38 +398,38 @@ proxy-groups:
       - 🔯 香港故转
       - ♻️ 自动选择
       - 🌐 全部节点
-    icon: "💶"
+    
 
   # 节点自动筛选组（优化健康检查）
   - name: 🇭🇰 香港节点
     type: select
     include-all: true
     filter: "(?i)HK|香港|Hong Kong|HongKong"
-    icon: "🇭🇰"
+    
 
   - name: 🇹🇼 台湾节点
     type: select
     include-all: true
-    filter: "(?i)TW|台湾|台灣|Tai Wan|TaiWan"
-    icon: "🇹🇼"
+    filter: "(?i)🇹🇼|台湾|台灣|Tai Wan|TaiWan"
+    
 
   - name: 🇯🇵 日本节点
     type: select
     include-all: true
     filter: "(?i)JP|日本|Japan"
-    icon: "🇯🇵"
+    
 
   - name: 🇸🇬 狮城节点
     type: select
     include-all: true
     filter: "(?i)SG|新加坡|狮城|Singapore"
-    icon: "🇸🇬"
+    
 
   - name: 🇺🇲 美国节点
     type: select
     include-all: true
     filter: "(?i)US|美国|America|States"
-    icon: "🇺🇲"
+    
 
   # 故障转移组（自动切换可用节点）
   - name: 🔯 香港故转
@@ -439,7 +439,7 @@ proxy-groups:
     timeout: 5
     tolerance: 50
     filter: "(?i)HK|香港|Hong Kong|HongKong"
-    icon: "🔯"
+    
 
   - name: 🔯 台湾故转
     type: fallback
@@ -448,7 +448,7 @@ proxy-groups:
     timeout: 5
     tolerance: 50
     filter: "(?i)TW|台湾|台灣|Tai Wan|TaiWan"
-    icon: "🔯"
+    
 
   - name: 🔯 日本故转
     type: fallback
@@ -457,7 +457,7 @@ proxy-groups:
     timeout: 5
     tolerance: 50
     filter: "(?i)JP|日本|Japan"
-    icon: "🔯"
+    
 
   - name: 🔯 狮城故转
     type: fallback
@@ -466,7 +466,7 @@ proxy-groups:
     timeout: 5
     tolerance: 50
     filter: "(?i)SG|新加坡|狮城|Singapore"
-    icon: "🔯"
+    
 
   - name: 🔯 美国故转
     type: fallback
@@ -475,7 +475,7 @@ proxy-groups:
     timeout: 5
     tolerance: 50
     filter: "(?i)US|美国|America|States"
-    icon: "🔯"
+    
 
   # 自动选择组（延迟优先）
   - name: ♻️ 自动选择
@@ -486,13 +486,13 @@ proxy-groups:
     timeout: 5
     tolerance: 20
     filter: "^((?!(直连)).)*$"
-    icon: "♻️"
+    
 
   # 全节点选择组
   - name: 🌐 全部节点
     type: select
     include-all: true
-    icon: "🌐"
+    
 
 # 规则匹配（优化优先级与效率）
 rules:
