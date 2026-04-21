@@ -80,18 +80,7 @@ dns:
 
   # 3. 基础兼容性过滤 (解决内网与测速问题)
   fake-ip-filter:
-    - "*.lan"
-    - "*.localdomain"
-    - "*.example"
-    - "*.invalid"
-    - "*.localhost"
-    - "*.test"
-    - "*.local"
-    - "*.home.arpa"
-    - "msftconnecttest.com"
-    - "msftncsi.com"
-    - "connectivitycheck.gstatic.com"
-    - "+.speedtest.net"
+    - "rule-set:fakeipfilter_domain"
 
 # 5. 代理策略组 (核心变动部分)
 proxy-groups:
@@ -166,6 +155,8 @@ rules:
 
 # 7. 规则提供者
 rule-providers:
+  fakeipfilter_domain: {<<: *domain, url: "https://raw.githubusercontent.com/wwqgtxx/clash-rules/release/fakeip-filter.mrs"}
+  private_domain: { <<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/private.mrs"}
   AI: { <<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/openai.mrs" }
   Gemini: { <<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/google-gemini.mrs" }
   # 流媒体规则集
