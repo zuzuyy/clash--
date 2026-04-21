@@ -264,16 +264,17 @@ proxy-groups:
   - name: 🎵 Spotify
     type: select
     proxies:
-      - 直连
       - 🔯 香港故转
       - ♻️ 自动选择
       - 🌐 全部节点
+      - 直连
     icon: "🎵"
 
   # 社交通讯专用组
   - name: 📲 Telegram
     type: select
     proxies:
+      - 🚀 默认代理
       - 🔯 香港故转
       - 🔯 台湾故转
       - 🔯 狮城故转
@@ -347,17 +348,17 @@ proxy-groups:
   - name: 🐬 OneDrive
     type: select
     proxies:
+      - 直连
       - 🚀 默认代理
       - 🌐 全部节点
-      - 直连
     icon: "🐬"
 
   - name: 🪟 Microsoft
     type: select
     proxies:
+      - 直连
       - 🚀 默认代理
       - 🌐 全部节点
-      - 直连
     icon: "🪟"
 
   - name: 🛒 Amazon
