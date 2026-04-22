@@ -68,8 +68,8 @@ dns:
   enable: true
   cache: true               # 开启DNS缓存
   cache-algorithm: arc      # 高效缓存算法
-  cache-size: 10240         # 缓存大小
-  cache-ttl: 3600           # 缓存有效期
+  cache-size: 2048        # 降低缓存条目
+  cache-ttl: 300          # 缓存5分钟（国内CDN适配）
   listen: 0.0.0.0:1053      # DNS监听端口
   ipv6: false
   respect-rules: true       # 规则生效于DNS解析
@@ -101,7 +101,7 @@ dns:
 
 # 代理节点订阅配置
 proxy-providers:
-  红杏云:
+  Airport:
     url: "订阅地址"       # 替换为实际订阅地址
     type: http
     interval: 86400         # 24小时更新一次
@@ -520,10 +520,10 @@ rules:
   
   # 第五优先级：办公/系统服务
   - RULE-SET,github_domain,👨🏿‍💻 GitHub
-  - RULE-SET,onedrive_domain,🐟 漏网之鱼
+  - RULE-SET,onedrive_domain,🐬 OneDrive
   - RULE-SET,microsoft_domain,🪟 Microsoft
   - RULE-SET,apple_domain,直连
-  - RULE-SET,apple_ip,直连,no-resolve
+  - RULE-SET,apple_ip,直连
   
   # 第六优先级：其他社交/媒体
   - RULE-SET,tiktok_domain,🎵 TikTok
@@ -542,9 +542,9 @@ rules:
   - RULE-SET,paypal_domain,💶 PayPal
   
   # 第八优先级：国内/国外分流
+  - RULE-SET,geolocation-!cn,🚀 默认代理
   - RULE-SET,cn_domain,直连
   - RULE-SET,cn_ip,直连,no-resolve
-  - RULE-SET,geolocation-!cn,🚀 默认代理
   
   # 最后兜底：漏网之鱼
   - MATCH,🐟 漏网之鱼
