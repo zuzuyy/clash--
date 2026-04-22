@@ -1,0 +1,364 @@
+# 超小白说明版（只改一行就能用）
+# 用法：
+# 1. 在机场后台找到 Clash.Meta / Mihomo 订阅链接
+# 2. 找到下面 `proxy-providers -> 机场订阅 -> url` 这一行
+# 3. 把 `https://example.com/replace-with-your-subscription` 整段替换成你自己的订阅链接
+# 4. 除了这一行，其他内容都不要改
+# 5. 保存后导入客户端，打开“节点选择”，选“自动选择”或你想用的节点
+
+mixed-port: 7890
+redir-port: 7892
+tproxy-port: 7895
+allow-lan: true
+bind-address: "*"
+mode: rule
+log-level: info
+ipv6: false
+unified-delay: true
+tcp-concurrent: true
+geodata-mode: true
+
+dns:
+  enable: true
+  listen: 0.0.0.0:1053
+  ipv6: false
+  respect-rules: true
+  enhanced-mode: fake-ip
+  fake-ip-range: 198.18.0.1/16
+  fake-ip-filter-mode: rule
+  fake-ip-filter:
+    # 银行 / 支付（显式保险，GEOSITE 库更新有延迟）
+    - DOMAIN-SUFFIX,alipay.com,real-ip
+    - DOMAIN-SUFFIX,alipayobjects.com,real-ip
+    - DOMAIN-SUFFIX,alipayhk.com,real-ip
+    - DOMAIN-SUFFIX,antgroup.com,real-ip
+    - DOMAIN-SUFFIX,antfinancial.com,real-ip
+    - DOMAIN-SUFFIX,tenpay.com,real-ip
+    - DOMAIN-SUFFIX,wechat.com,real-ip
+    - DOMAIN-SUFFIX,wechatpay.cn,real-ip
+    - DOMAIN-SUFFIX,weixin.qq.com,real-ip
+    - DOMAIN-SUFFIX,wx.qq.com,real-ip
+    - DOMAIN-SUFFIX,unionpay.com,real-ip
+    - DOMAIN-SUFFIX,unionpaysecure.com,real-ip
+    - DOMAIN-SUFFIX,95516.com,real-ip
+    # 国内 / 私有域名全覆盖
+    - GEOSITE,private,real-ip
+    - GEOSITE,cn,real-ip
+    # 系统 / 网络检测
+    - DOMAIN-SUFFIX,localhost,real-ip
+    - DOMAIN-SUFFIX,local,real-ip
+    - DOMAIN-SUFFIX,lan,real-ip
+    - DOMAIN-SUFFIX,msftconnecttest.com,real-ip
+    - DOMAIN-SUFFIX,msftncsi.com,real-ip
+    - DOMAIN-KEYWORD,time,real-ip
+    - DOMAIN-KEYWORD,ntp,real-ip
+    - MATCH,fake-ip
+  default-nameserver:
+    - 223.5.5.5
+    - 119.29.29.29
+
+  # 优化核心：按域名策略选择 DNS 服务器，避免国内域名误触 fallback 走代理 DNS
+  nameserver-policy:
+    # 国内域名 → 强制使用国内 DNS，防止银行 / 支付域名被代理解析
+    "geosite:cn,private":
+      - 223.5.5.5
+      - 119.29.29.29
+      - https://dns.alidns.com/dns-query
+      - https://doh.pub/dns-query
+    # 国外域名 → 走代理 DNS，防止污染
+    "geosite:geolocation-!cn":
+      - "https://8.8.8.8/dns-query#节点选择"
+      - "https://1.1.1.1/dns-query#节点选择"
+
+  nameserver:
+    - "https://1.1.1.1/dns-query#节点选择"
+    - "https://8.8.8.8/dns-query#节点选择"
+
+  proxy-server-nameserver:
+    - 223.5.5.5
+    - 119.29.29.29
+
+  direct-nameserver:
+    - https://dns.alidns.com/dns-query
+    - https://doh.pub/dns-query
+
+  direct-nameserver-follow-policy: true
+
+proxy-providers:
+  机场订阅:
+    type: http
+    url: "https://example.com/replace-with-your-subscription"
+    path: ./proxy_providers/airport.yaml
+    interval: 3600
+    header:
+      User-Agent:
+        - "clash-verge/v2.0.0"
+    # 可选：只保留某些节点，例如港新日美
+    # filter: "(?i)港|hk|hong kong|新|sg|singapore|日|jp|japan|美|us|united states"
+    health-check:
+      enable: true
+      url: https://www.gstatic.com/generate_204
+      interval: 300
+
+proxy-groups:
+  - name: 自动选择
+    type: url-test
+    use:
+      - 机场订阅
+    url: https://www.gstatic.com/generate_204
+    interval: 300
+    tolerance: 50
+
+  - name: 节点选择
+    type: select
+    use:
+      - 机场订阅
+    proxies:
+      - 自动选择
+      - DIRECT
+
+  - name: 国外服务
+    type: select
+    proxies:
+      - 节点选择
+      - 自动选择
+      - DIRECT
+
+  - name: AI服务
+    type: select
+    proxies:
+      - 节点选择
+      - 自动选择
+      - DIRECT
+
+  - name: 流媒体
+    type: select
+    proxies:
+      - 节点选择
+      - 自动选择
+      - DIRECT
+
+  - name: 漏网之鱼
+    type: select
+    proxies:
+      - 节点选择
+      - 自动选择
+      - DIRECT
+
+rules:
+  # --- 本地/局域网 ---
+  - DOMAIN-SUFFIX,localhost,DIRECT
+  - DOMAIN-SUFFIX,local,DIRECT
+  - DOMAIN-SUFFIX,lan,DIRECT
+  - IP-CIDR,0.0.0.0/8,DIRECT,no-resolve
+  - IP-CIDR,10.0.0.0/8,DIRECT,no-resolve
+  - IP-CIDR,100.64.0.0/10,DIRECT,no-resolve
+  - IP-CIDR,127.0.0.0/8,DIRECT,no-resolve
+  - IP-CIDR,169.254.0.0/16,DIRECT,no-resolve
+  - IP-CIDR,172.16.0.0/12,DIRECT,no-resolve
+  - IP-CIDR,192.168.0.0/16,DIRECT,no-resolve
+  - IP-CIDR,224.0.0.0/4,DIRECT,no-resolve
+  - IP-CIDR6,fc00::/7,DIRECT,no-resolve
+  - IP-CIDR6,fe80::/10,DIRECT,no-resolve
+
+  # ==========================================
+  # ✅ 银行 / 支付 / 政务优先直连
+  # 必须保持在所有代理规则之前，避免登录、验证、支付、政务办事误走代理
+  # ==========================================
+
+  # 银行登录修复：风控安全 SDK（必须直连，否则银行 APP 登录验证可能失败）
+  - DOMAIN-SUFFIX,tongdun.net,DIRECT           # 同盾科技 反欺诈
+  - DOMAIN-SUFFIX,tongduncdn.com,DIRECT        # 同盾 CDN
+  - DOMAIN-SUFFIX,ishumei.com,DIRECT           # 数美科技 风控
+  - DOMAIN-SUFFIX,riskradar.net,DIRECT         # 数美 风险雷达
+  - DOMAIN-SUFFIX,geetest.com,DIRECT           # 极验 验证码/行为验证
+  - DOMAIN-SUFFIX,dingxiangyun.com,DIRECT      # 顶象科技 设备指纹
+  - DOMAIN-SUFFIX,dingxiangyun.cn,DIRECT       # 顶象科技
+  - DOMAIN-SUFFIX,trustdevice.net,DIRECT       # TrustDevice 设备风控
+  - DOMAIN-SUFFIX,aegis.qq.com,DIRECT          # 腾讯安全 鹰眼
+  - DOMAIN-SUFFIX,antpay.com,DIRECT            # 蚂蚁支付安全
+  - DOMAIN-SUFFIX,rong360.com,DIRECT           # 百融云创
+
+  # ✅ 银行APP推送/统计服务（不直连会导致部分银行APP无法收到验证码推送）
+  - DOMAIN-SUFFIX,jiguang.cn,DIRECT            # 极光推送
+  - DOMAIN-SUFFIX,jpush.cn,DIRECT              # 极光推送
+  - DOMAIN-SUFFIX,jpush.io,DIRECT              # 极光推送
+  - DOMAIN-SUFFIX,umeng.com,DIRECT             # 友盟统计
+  - DOMAIN-SUFFIX,umengcloud.com,DIRECT        # 友盟云
+  - DOMAIN-SUFFIX,rongcloud.cn,DIRECT          # 融云IM（多家银行APP使用）
+  - DOMAIN-SUFFIX,rongcloud.com,DIRECT         # 融云
+
+  # 国内银行域名
+  - DOMAIN-KEYWORD,bank,DIRECT
+  - DOMAIN-SUFFIX,95516.com,DIRECT             # 银联客服
+  - DOMAIN-SUFFIX,unionpay.com,DIRECT          # 银联
+  - DOMAIN-SUFFIX,unionpaysecure.com,DIRECT    # 银联安全
+  - DOMAIN-SUFFIX,icbc.com.cn,DIRECT           # 工商银行
+  - DOMAIN-SUFFIX,ccb.com,DIRECT               # 建设银行
+  - DOMAIN-SUFFIX,ccblife.com,DIRECT           # 建行生活
+  - DOMAIN-SUFFIX,boc.cn,DIRECT                # 中国银行
+  - DOMAIN-SUFFIX,abchina.com,DIRECT           # 农业银行
+  - DOMAIN-SUFFIX,psbc.com,DIRECT              # 邮储银行
+  - DOMAIN-SUFFIX,bankcomm.com,DIRECT          # 交通银行
+  - DOMAIN-SUFFIX,cmbchina.com,DIRECT          # 招商银行
+  - DOMAIN-SUFFIX,spdb.com.cn,DIRECT           # 浦发银行
+  - DOMAIN-SUFFIX,cib.com.cn,DIRECT            # 兴业银行
+  - DOMAIN-SUFFIX,cebbank.com,DIRECT           # 光大银行
+  - DOMAIN-SUFFIX,pingan.com,DIRECT            # 平安银行
+  - DOMAIN-SUFFIX,pingan.com.cn,DIRECT         # 平安
+  - DOMAIN-SUFFIX,cmbwinglungbank.com,DIRECT   # 招商永隆
+  - DOMAIN-SUFFIX,cmbc.com.cn,DIRECT           # 民生银行
+  - DOMAIN-SUFFIX,cgbchina.com.cn,DIRECT       # 广发银行
+  - DOMAIN-SUFFIX,hxb.com.cn,DIRECT            # 华夏银行
+  - DOMAIN-SUFFIX,bankofshanghai.com,DIRECT    # 上海银行
+  - DOMAIN-SUFFIX,shrcb.com,DIRECT             # 上海农商行
+  - DOMAIN-SUFFIX,gzcb.com.cn,DIRECT           # 广州银行
+  - DOMAIN-SUFFIX,nbcb.com.cn,DIRECT           # 宁波银行
+  - DOMAIN-SUFFIX,njcb.com.cn,DIRECT           # 南京银行
+  - DOMAIN-SUFFIX,cqrcb.com,DIRECT             # 重庆农商行
+  - DOMAIN-SUFFIX,brcb.com.cn,DIRECT           # 北京农商行
+  - DOMAIN-SUFFIX,czbank.com,DIRECT            # 浙商银行
+  - DOMAIN-SUFFIX,hkbchina.com,DIRECT          # 汉口银行
+  - DOMAIN-SUFFIX,bocd.com.cn,DIRECT           # 东莞银行
+  - DOMAIN-SUFFIX,bocsh.com,DIRECT             # 中银上海
+  - DOMAIN-SUFFIX,srcb.com.cn,DIRECT           # 深圳农商行
+  - DOMAIN-SUFFIX,gdb.com.cn,DIRECT            # 广东发展银行（广发旧域名）
+
+  # 支付宝 / 微信支付
+  - DOMAIN-SUFFIX,alipay.com,DIRECT
+  - DOMAIN-SUFFIX,alipayobjects.com,DIRECT
+  - DOMAIN-SUFFIX,alipayhk.com,DIRECT
+  - DOMAIN-SUFFIX,antgroup.com,DIRECT          # 蚂蚁集团
+  - DOMAIN-SUFFIX,antfinancial.com,DIRECT      # 蚂蚁金服
+  - DOMAIN-SUFFIX,tenpay.com,DIRECT
+  - DOMAIN-SUFFIX,weixin.qq.com,DIRECT
+  - DOMAIN-SUFFIX,wechat.com,DIRECT
+  - DOMAIN-SUFFIX,servicewechat.com,DIRECT
+  - DOMAIN-SUFFIX,qpic.cn,DIRECT
+  - DOMAIN-SUFFIX,qlogo.cn,DIRECT
+  - DOMAIN-SUFFIX,url.cn,DIRECT
+  - DOMAIN-SUFFIX,wechatpay.cn,DIRECT
+  - DOMAIN-SUFFIX,wx.qq.com,DIRECT
+  - DOMAIN-SUFFIX,weixinbridge.com,DIRECT
+
+  # --- 小红书 ---
+  - DOMAIN-SUFFIX,xiaohongshu.com,DIRECT
+  - DOMAIN-SUFFIX,xiaohongshu.net,DIRECT
+  - DOMAIN-SUFFIX,xhscdn.com,DIRECT
+
+  # 政务 / 公共服务
+  - DOMAIN-SUFFIX,12315.cn,DIRECT
+  - DOMAIN-SUFFIX,12315.gov.cn,DIRECT
+  - DOMAIN-SUFFIX,gov.cn,DIRECT
+  - DOMAIN-KEYWORD,12315,DIRECT
+  - DOMAIN-KEYWORD,gjzwfw,DIRECT
+  - DOMAIN-KEYWORD,12306,DIRECT
+  - DOMAIN-SUFFIX,12306.cn,DIRECT
+  - DOMAIN-SUFFIX,govapp.cn,DIRECT
+
+  # --- 运营商 ---
+  - DOMAIN-SUFFIX,10086.cn,DIRECT
+  - DOMAIN-SUFFIX,10010.com,DIRECT
+  - DOMAIN-SUFFIX,189.cn,DIRECT
+  - DOMAIN-SUFFIX,chinamobile.com,DIRECT
+  - DOMAIN-SUFFIX,chinaunicom.com,DIRECT
+  - DOMAIN-SUFFIX,chinatelecom.com.cn,DIRECT
+
+  # --- 小米生态 ---
+  - DOMAIN-SUFFIX,mi.com,DIRECT
+  - DOMAIN-SUFFIX,miui.com,DIRECT
+  - DOMAIN-SUFFIX,xiaomi.com,DIRECT
+  - DOMAIN-SUFFIX,xiaomicp.com,DIRECT
+  - DOMAIN-SUFFIX,miot-spec.com,DIRECT
+  - DOMAIN-SUFFIX,io.mi.com,DIRECT
+  - DOMAIN-SUFFIX,ot.io.mi.com,DIRECT
+
+  # --- 国内家电品牌 ---
+  - DOMAIN-SUFFIX,midea.com,DIRECT
+  - DOMAIN-SUFFIX,midea.com.cn,DIRECT
+  - DOMAIN-SUFFIX,smartmidea.net,DIRECT
+  - DOMAIN-SUFFIX,haier.net,DIRECT
+  - DOMAIN-SUFFIX,haier.com,DIRECT
+  - DOMAIN-SUFFIX,hisense.com,DIRECT
+  - DOMAIN-SUFFIX,tcl.com,DIRECT
+  - DOMAIN-SUFFIX,yeelight.com,DIRECT
+  - DOMAIN-SUFFIX,aqara.com,DIRECT
+  - DOMAIN-SUFFIX,tuya.com,DIRECT
+  - DOMAIN-SUFFIX,tuyaus.com,DIRECT
+
+  # --- 电商/娱乐 ---
+  - DOMAIN-SUFFIX,taobao.com,DIRECT
+  - DOMAIN-SUFFIX,tmall.com,DIRECT
+  - DOMAIN-SUFFIX,jd.com,DIRECT
+  - DOMAIN-SUFFIX,jd.hk,DIRECT
+  - DOMAIN-SUFFIX,pinduoduo.com,DIRECT
+  - DOMAIN-SUFFIX,suning.com,DIRECT
+  - DOMAIN-SUFFIX,douyin.com,DIRECT
+  - DOMAIN-SUFFIX,douyinpic.com,DIRECT
+  - DOMAIN-SUFFIX,iesdouyin.com,DIRECT
+  - DOMAIN-SUFFIX,snssdk.com,DIRECT
+  - DOMAIN-SUFFIX,amemv.com,DIRECT
+  - DOMAIN-SUFFIX,byteimg.com,DIRECT
+  - DOMAIN-SUFFIX,ibytedtos.com,DIRECT
+  - DOMAIN-SUFFIX,volccdn.com,DIRECT
+  - DOMAIN-SUFFIX,ixigua.com,DIRECT
+  - DOMAIN-SUFFIX,bilibili.com,DIRECT
+  - DOMAIN-SUFFIX,bilivideo.com,DIRECT
+  - DOMAIN-SUFFIX,iqiyi.com,DIRECT
+  - DOMAIN-SUFFIX,youku.com,DIRECT
+  - DOMAIN-SUFFIX,qq.com,DIRECT
+  - DOMAIN-SUFFIX,tencent.com,DIRECT
+  - DOMAIN-SUFFIX,gtimg.com,DIRECT
+  - DOMAIN-SUFFIX,gtimg.cn,DIRECT
+  - DOMAIN-SUFFIX,gtimg.net,DIRECT
+  - DOMAIN-SUFFIX,idqqimg.com,DIRECT
+  - DOMAIN-SUFFIX,qqmail.com,DIRECT
+  - DOMAIN-SUFFIX,foxmail.com,DIRECT
+  - DOMAIN-SUFFIX,weiyun.com,DIRECT
+  - DOMAIN-SUFFIX,myapp.com,DIRECT
+  - DOMAIN-SUFFIX,qcloud.com,DIRECT
+  - DOMAIN-SUFFIX,myqcloud.com,DIRECT
+  - DOMAIN-SUFFIX,tencentcloud.com,DIRECT
+  - DOMAIN-SUFFIX,weibo.com,DIRECT
+
+  # --- AI 服务（优先匹配，置于 GEOSITE,cn 之前）---
+  - DOMAIN-SUFFIX,openai.com,AI服务
+  - DOMAIN-SUFFIX,chatgpt.com,AI服务
+  - DOMAIN-SUFFIX,anthropic.com,AI服务
+  - DOMAIN-SUFFIX,claude.ai,AI服务
+  - DOMAIN,gemini.google.com,AI服务
+  - DOMAIN-SUFFIX,ai.com,AI服务
+
+  # --- 国外服务（优先匹配，置于 GEOSITE,cn 之前）---
+  - DOMAIN-SUFFIX,google.com,国外服务
+  - DOMAIN-SUFFIX,google.com.hk,国外服务
+  - DOMAIN-SUFFIX,googleapis.com,国外服务
+  - DOMAIN-SUFFIX,gstatic.com,国外服务
+  - DOMAIN-SUFFIX,googlevideo.com,国外服务
+  - DOMAIN-SUFFIX,ggpht.com,国外服务
+  - DOMAIN-SUFFIX,gvt1.com,国外服务
+  - GEOSITE,google,国外服务
+  - GEOSITE,youtube,国外服务
+  - GEOSITE,telegram,国外服务
+  - GEOSITE,twitter,国外服务
+  - GEOSITE,facebook,国外服务
+  - GEOSITE,github,国外服务
+  - GEOSITE,geolocation-!cn,国外服务
+  - DOMAIN-SUFFIX,intercom.io,国外服务
+  - DOMAIN-SUFFIX,intercomcdn.com,国外服务
+
+  # --- 流媒体 ---
+  - GEOSITE,netflix,流媒体
+  - GEOSITE,disney,流媒体
+
+  # --- CN 兜底（放在所有代理规则之后）---
+  - GEOSITE,apple-cn,DIRECT
+  - DOMAIN-SUFFIX,sky9119.cc,国外服务
+  - DOMAIN-SUFFIX,microsoft.com,DIRECT
+  - DOMAIN-SUFFIX,microsoftonline.com,国外服务
+  - DOMAIN-SUFFIX,msftconnecttest.com,DIRECT
+  - DOMAIN-SUFFIX,msftncsi.com,DIRECT
+  - GEOSITE,cn,DIRECT
+  - GEOIP,CN,DIRECT
+
+  - MATCH,漏网之鱼
