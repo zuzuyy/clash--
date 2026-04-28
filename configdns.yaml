@@ -181,6 +181,8 @@ rules:
   - RULE-SET,geolocation-!cn,🚀 默认代理
   - RULE-SET,cn_domain,直连
   - RULE-SET,cn_ip,直连,no-resolve
+  - DOMAIN-SUFFIX,ctyun.cn,直连
+  - DOMAIN-SUFFIX,chinaccs.cn,直连
   - MATCH,🐟 漏网之鱼
 
 # 规则锚点
