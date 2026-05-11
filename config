@@ -144,6 +144,8 @@ rules:
   - RULE-SET,geolocation-!cn,🚀 默认代理
   - RULE-SET,cn_domain,直连
   - RULE-SET,cn_ip,直连
+  - IP-CIDR,134.185.105.131/32,直连 #单个IP地址直连，一段IP/24
+  - DOMAIN-SUFFIX,blizzard.cn,直连 #域名直连
   - MATCH,🐟 漏网之鱼
 
 # 规则集
