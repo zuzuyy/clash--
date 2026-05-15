@@ -65,25 +65,35 @@ dns:
   enhanced-mode: fake-ip
   fake-ip-range: 28.0.0.1/8
   fake-ip-filter-mode: blacklist
-  # 启动 DNS：使用 IP 跳过域名递归
+  
   default-nameserver:
     - 223.5.5.5
     - 119.29.29.29
-    - 1.1.1.1
-  # 代理服务器域名解析
+
+  # 用于解析代理节点域名的服务器，建议只用国内 DoH
   proxy-server-nameserver:
     - https://dns.alidns.com/dns-query
-  # 核心解析策略：强制国内 DOH 走直连，国外 DOH 走代理
+
+  # 默认解析器：仅保留海外加密 DNS，防止兜底请求泄露
   nameserver:
-    - https://dns.alidns.com/dns-query#直连
-    - https://doh.pub/dns-query#直连
-    - https://8.8.8.8/dns-query#🚀 默认代理&ecs=223.5.5.0/24
+    - https://8.8.8.8/dns-query#🚀 默认代理
+    - https://1.1.1.1/dns-query#🚀 默认代理
+
+  # 策略分流：强制国内域名走国内 DNS，其余全部走上面的 nameserver
+  nameserver-policy:
+    "geosite:cn,private":
+      - https://dns.alidns.com/dns-query#直连
+      - https://doh.pub/dns-query#直连
+    "rule-set:fakeipfilter_domain":
+      - https://dns.alidns.com/dns-query#直连
+    "geosite:category-ads-all": rcode://success
+
   fake-ip-filter:
     - "rule-set:fakeipfilter_domain"
 
 proxy-groups:
   - {name: 🚀 默认代理, type: select, proxies: [🔯 香港故转, 🔯 台湾故转, 🔯 日本故转, 🔯 狮城故转, 🔯 美国故转, ♻️ 自动选择, 🌐 全部节点, 直连]}
-  - {name: 🐟 漏网之鱼, type: select, proxies: [🚀 默认代理, 🔯 香港故转, 🔯 台湾故转, 🔯 日本故转, 🔯 狮城故转, 🔯 美国故转, ♻️ 自动选择, 🌐 全部节点, 直连]}
+  - {name: 🐟 漏网之鱼, type: select, proxies: [🚀 默认代理, ♻️ 自动选择, 🌐 全部节点]}
   
   # AI 服务
   - {name: 🤖 ChatGPT, type: select, proxies: [🚀 默认代理, 🔯 美国故转, 🔯 台湾故转, 🔯 日本故转, 🔯 狮城故转, 🔯 香港故转, ♻️ 自动选择, 🌐 全部节点]}
@@ -101,7 +111,7 @@ proxy-groups:
   - {name: 🎵 Spotify, type: select, proxies: [直连, 🚀 默认代理, ♻️ 自动选择, 🌐 全部节点]}
 
   # 社交 & 通讯
-  - {name: 📲 Telegram, type: select, proxies: [🚀 默认代理, 🔯 香港故转, 🔯 台湾故转, 🔯 狮城故转, 🔯 美国故转, ♻️ 自动选择, 🌐 全部节点]}
+  - {name: 📲 Telegram, type: select, proxies: [🔯 香港故转, 🔯 台湾故转, 🔯 狮城故转, 🔯 美国故转, ♻️ 自动选择, 🌐 全部节点]}
   - {name: 👥 Facebook/Meta, type: select, proxies: [🚀 默认代理, 🔯 台湾故转, 🔯 日本故转, 🔯 香港故转, 🔯 狮城故转, 🔯 美国故转, ♻️ 自动选择, 🌐 全部节点]}
   - {name: 💬 WhatsApp, type: select, proxies: [🚀 默认代理, 🔯 台湾故转, 🔯 日本故转, 🔯 香港故转, 🔯 狮城故转, 🔯 美国故转, ♻️ 自动选择, 🌐 全部节点]}
   - {name: 🎵 TikTok, type: select, proxies: [🚀 默认代理, 🔯 日本故转, 🔯 台湾故转, 🔯 狮城故转, 🔯 美国故转, 🔯 香港故转, ♻️ 自动选择, 🌐 全部节点]}
@@ -135,6 +145,7 @@ rules:
   # 基础直连 (高优先级)
   - RULE-SET,private_ip,直连,no-resolve
   - RULE-SET,private_domain,直连
+  - IP-CIDR,134.185.105.131/32,直连
   
   # AI 相关 (按需前置)
   - RULE-SET,ai,🤖 ChatGPT
@@ -181,9 +192,12 @@ rules:
   - RULE-SET,geolocation-!cn,🚀 默认代理
   - RULE-SET,cn_domain,直连
   - RULE-SET,cn_ip,直连,no-resolve
+  - DOMAIN-SUFFIX,kstore.vip,直连
+  - DOMAIN-SUFFIX,battlenet.com.cn,直连
   - DOMAIN-SUFFIX,ctyun.cn,直连
   - DOMAIN-SUFFIX,chinaccs.cn,直连
   - DOMAIN-SUFFIX,blizzard.cn,直连
+  - DOMAIN-SUFFIX,okemby.org,直连
   - MATCH,🐟 漏网之鱼
 
 # 规则锚点
@@ -195,7 +209,7 @@ rule-anchor:
 rule-providers: 
   fakeipfilter_domain: {<<: *domain, url: "https://raw.githubusercontent.com/wwqgtxx/clash-rules/release/fakeip-filter.mrs"}
   private_domain: { <<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/private.mrs"}
-  proxylite: { <<: *class, url: "https://raw.githubusercontent.com/qichiyuhub/rule/refs/heads/main/rules/proxy.list"}
+  proxylite: { <<: *class, url: "https://raw.githubusercontent.com/qichiyuhub/rule/refs/heads/main/proxy.list"}
   
   # AI
   ai: { <<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/openai.mrs" }
