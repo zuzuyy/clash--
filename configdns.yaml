@@ -34,19 +34,26 @@ profile:
   store-fake-ip: true
 
 sniffer:
-  enable: true
+  enable: true                                                          # 启用嗅探  提升分流准确性
+  override-destination: true                                            # 成功解析  使用嗅探到的域名覆盖原始目标地址
+  parse-pure-ip: true                                                   # 反向解析  解析纯 IP 连接（尝试反向解析获得域名）
+  force-dns-mapping: true                                               # 强制映射  DNS 映射（对纯 IP 连接尝试 DNS 映射）
   sniff:
-    HTTP:
-      ports: [80, 8080-8880]
-      override-destination: true
-    TLS:
-      ports: [443, 8443]
-    QUIC:
-      ports: [443, 8443]
+    QUIC: { ports: [443] }                                              # 嗅探参数  QUIC 协议流量（HTTP/3 常用端口）
+    TLS:  { ports: [443, 8443] }                                        # 嗅探参数  HTTPS（TLS）常用及备用端口
+    HTTP: { ports: [80, 8080-8880], override-destination: true }        # 嗅探参数  HTTP 及常见 Web / 代理端口段(嗅探成功后覆盖目标地址)
+  force-domain:
+    - "+.netflix.com"                                                   # 强制嗅探  Netflix 主域名
+    - "+.nflxvideo.net"                                                 # 强制嗅探  Netflix CDN
+    - "+.amazonaws.com"                                                 # 强制嗅探  AWS 云服务
+    - "+.media.dssott.com"                                              # 强制嗅探  Disney+ 流媒体
+    - "+.tiktok.com"                                                    # 强制嗅探  TikTok 流媒体
   skip-domain:
-    - "Mijia Cloud"
-    - "+.push.apple.com"
-    - "+.apple.com"
+    - Mijia Cloud                                                       # 跳过嗅探  米家云服务
+    - dlg.io.mi.com                                                     # 跳过嗅探  小米设备通信
+    - "+.oray.com"                                                      # 跳过嗅探  花生壳服务
+    - "+.sunlogin.net"                                                  # 跳过嗅探  向日葵远程控制
+    - "+.push.apple.com"                                                # 跳过嗅探  苹果推送服务
 
 tun:
   enable: true
@@ -97,6 +104,7 @@ proxy-groups:
   
   # AI 服务
   - {name: 🤖 ChatGPT, type: select, proxies: [🚀 默认代理, 🔯 美国故转, 🔯 台湾故转, 🔯 日本故转, 🔯 狮城故转, 🔯 香港故转, ♻️ 自动选择, 🌐 全部节点]}
+  - {name: 🤖 Claude, type: select, proxies: [🚀 默认代理, 🔯 美国故转, 🔯 台湾故转, 🔯 日本故转, 🔯 狮城故转, 🔯 香港故转, ♻️ 自动选择, 🌐 全部节点]}
   - {name: ♊ Gemini, type: select, proxies: [🚀 默认代理, 🔯 美国故转, 🔯 台湾故转, 🔯 日本故转, 🔯 狮城故转, 🔯 香港故转, ♻️ 自动选择, 🌐 全部节点]}
   - {name: 🟣 Perplexity, type: select, proxies: [🚀 默认代理, 🔯 美国故转, 🔯 台湾故转, 🔯 日本故转, 🔯 狮城故转, 🔯 香港故转, ♻️ 自动选择, 🌐 全部节点]}
   - {name: 🗿 Grok, type: select, proxies: [🚀 默认代理, 🔯 美国故转, 🔯 台湾故转, 🔯 日本故转, 🔯 狮城故转, 🔯 香港故转, ♻️ 自动选择, 🌐 全部节点]}
@@ -111,7 +119,8 @@ proxy-groups:
   - {name: 🎵 Spotify, type: select, proxies: [直连, 🚀 默认代理, ♻️ 自动选择, 🌐 全部节点]}
 
   # 社交 & 通讯
-  - {name: 📲 Telegram, type: select, proxies: [🔯 香港故转, 🔯 台湾故转, 🔯 狮城故转, 🔯 美国故转, ♻️ 自动选择, 🌐 全部节点]}
+  - {name: 📲 Telegram, type: select, proxies: [🚀 默认代理, 🔯 香港故转, 🔯 台湾故转, 🔯 狮城故转, 🔯 美国故转, ♻️ 自动选择, 🌐 全部节点]}
+  - {name: 📲 Twitter(X), type: select, proxies: [🚀 默认代理, 🔯 香港故转, 🔯 台湾故转, 🔯 狮城故转, 🔯 美国故转, ♻️ 自动选择, 🌐 全部节点]}
   - {name: 👥 Facebook/Meta, type: select, proxies: [🚀 默认代理, 🔯 台湾故转, 🔯 日本故转, 🔯 香港故转, 🔯 狮城故转, 🔯 美国故转, ♻️ 自动选择, 🌐 全部节点]}
   - {name: 💬 WhatsApp, type: select, proxies: [🚀 默认代理, 🔯 台湾故转, 🔯 日本故转, 🔯 香港故转, 🔯 狮城故转, 🔯 美国故转, ♻️ 自动选择, 🌐 全部节点]}
   - {name: 🎵 TikTok, type: select, proxies: [🚀 默认代理, 🔯 日本故转, 🔯 台湾故转, 🔯 狮城故转, 🔯 美国故转, 🔯 香港故转, ♻️ 自动选择, 🌐 全部节点]}
@@ -145,17 +154,17 @@ rules:
   # 基础直连 (高优先级)
   - RULE-SET,private_ip,直连,no-resolve
   - RULE-SET,private_domain,直连
-  - IP-CIDR,134.185.105.131/32,直连
+  # - IP-CIDR,IP地址/32,直连
   
   # AI 相关 (按需前置)
-  - RULE-SET,ai,🤖 ChatGPT
+  - RULE-SET,openai,🤖 ChatGPT
+  - RULE-SET,anthropic_domain,🤖 Claude
   - RULE-SET,gemini,♊ Gemini
   - RULE-SET,perplexity,🟣 Perplexity
   - RULE-SET,grok,🗿 Grok
   - RULE-SET,meta_ai,♾️ Meta AI
   
   # 谷歌/社交 (常用服务)
-  - RULE-SET,telegram_domain,📲 Telegram
   - RULE-SET,youtube_domain,📹 YouTube
   - RULE-SET,google_domain,🍀 Google
   
@@ -166,6 +175,8 @@ rules:
   - RULE-SET,apple_domain,直连
   
   # 社交/短视频
+  - RULE-SET,telegram_domain,📲 Telegram
+  - RULE-SET,twitter_domain,📲 Twitter(X)
   - RULE-SET,tiktok_domain,🎵 TikTok
   - RULE-SET,facebook_domain,👥 Facebook/Meta
   - RULE-SET,whatsapp_domain,💬 WhatsApp
@@ -197,7 +208,6 @@ rules:
   - DOMAIN-SUFFIX,ctyun.cn,直连
   - DOMAIN-SUFFIX,chinaccs.cn,直连
   - DOMAIN-SUFFIX,blizzard.cn,直连
-  - DOMAIN-SUFFIX,okemby.org,直连
   - MATCH,🐟 漏网之鱼
 
 # 规则锚点
@@ -209,10 +219,11 @@ rule-anchor:
 rule-providers: 
   fakeipfilter_domain: {<<: *domain, url: "https://raw.githubusercontent.com/wwqgtxx/clash-rules/release/fakeip-filter.mrs"}
   private_domain: { <<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/private.mrs"}
-  proxylite: { <<: *class, url: "https://raw.githubusercontent.com/qichiyuhub/rule/refs/heads/main/proxy.list"}
+  proxylite: { <<: *class, url: "https://raw.githubusercontent.com/qichiyuhub/rule/refs/heads/main/rules/proxy.list"}
   
   # AI
-  ai: { <<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/openai.mrs" }
+  openai: { <<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/openai.mrs" }
+  anthropic_domain: { <<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/anthropic.mrs" }
   gemini: { <<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/google-gemini.mrs" }
   perplexity: { <<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/perplexity.mrs" }
   grok: { <<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/xai.mrs" }
@@ -228,6 +239,7 @@ rule-providers:
   
   # Social
   telegram_domain: { <<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/telegram.mrs"}
+  twitter_domain: { <<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/twitter.mrs"}
   facebook_domain: { <<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/facebook.mrs"}
   whatsapp_domain: { <<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/whatsapp.mrs"}
   tiktok_domain: { <<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/tiktok.mrs"}
