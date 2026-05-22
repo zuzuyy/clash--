@@ -104,8 +104,8 @@ proxy-groups:
   
   # AI 服务
   - {name: 🤖 ChatGPT, type: select, proxies: [🚀 默认代理, 🔯 美国故转, 🔯 台湾故转, 🔯 日本故转, 🔯 狮城故转, 🔯 香港故转, ♻️ 自动选择, 🌐 全部节点]}
-  - {name: 🤖 Claude, type: select, proxies: [🚀 默认代理, 🔯 美国故转, 🔯 台湾故转, 🔯 日本故转, 🔯 狮城故转, 🔯 香港故转, ♻️ 自动选择, 🌐 全部节点]}
-  - {name: ♊ Gemini, type: select, proxies: [🚀 默认代理, 🔯 美国故转, 🔯 台湾故转, 🔯 日本故转, 🔯 狮城故转, 🔯 香港故转, ♻️ 自动选择, 🌐 全部节点]}
+  - {name: 👽 Claude, type: select, proxies: [🚀 默认代理, 🔯 美国故转, 🔯 台湾故转, 🔯 日本故转, 🔯 狮城故转, 🔯 香港故转, ♻️ 自动选择, 🌐 全部节点]}
+  - {name: ✨ Gemini, type: select, proxies: [🚀 默认代理, 🔯 美国故转, 🔯 台湾故转, 🔯 日本故转, 🔯 狮城故转, 🔯 香港故转, ♻️ 自动选择, 🌐 全部节点]}
   - {name: 🟣 Perplexity, type: select, proxies: [🚀 默认代理, 🔯 美国故转, 🔯 台湾故转, 🔯 日本故转, 🔯 狮城故转, 🔯 香港故转, ♻️ 自动选择, 🌐 全部节点]}
   - {name: 🗿 Grok, type: select, proxies: [🚀 默认代理, 🔯 美国故转, 🔯 台湾故转, 🔯 日本故转, 🔯 狮城故转, 🔯 香港故转, ♻️ 自动选择, 🌐 全部节点]}
   - {name: ♾️ Meta AI, type: select, proxies: [🚀 默认代理, 🔯 美国故转, 🔯 台湾故转, 🔯 日本故转, 🔯 狮城故转, 🔯 香港故转, ♻️ 自动选择, 🌐 全部节点]}
@@ -115,12 +115,12 @@ proxy-groups:
   - {name: 🎥 NETFLIX, type: select, proxies: [🚀 默认代理, 🔯 狮城故转, 🔯 台湾故转, 🔯 香港故转, 🔯 日本故转, 🔯 美国故转, ♻️ 自动选择, 🌐 全部节点]}
   - {name: 🏰 Disney, type: select, proxies: [🚀 默认代理, 🔯 香港故转, 🔯 美国故转, 🔯 台湾故转, 🔯 狮城故转, ♻️ 自动选择, 🌐 全部节点]}
   - {name: 🎬 HBO, type: select, proxies: [🚀 默认代理, 🔯 香港故转, 🔯 美国故转, 🔯 台湾故转, 🔯 狮城故转, ♻️ 自动选择, 🌐 全部节点]}
-  - {name: 🟣 Twitch, type: select, proxies: [🚀 默认代理, ♻️ 自动选择, 🌐 全部节点]}
+  - {name: 📺 Twitch, type: select, proxies: [🚀 默认代理, ♻️ 自动选择, 🌐 全部节点]}
   - {name: 🎵 Spotify, type: select, proxies: [直连, 🚀 默认代理, ♻️ 自动选择, 🌐 全部节点]}
 
   # 社交 & 通讯
   - {name: 📲 Telegram, type: select, proxies: [🚀 默认代理, 🔯 香港故转, 🔯 台湾故转, 🔯 狮城故转, 🔯 美国故转, ♻️ 自动选择, 🌐 全部节点]}
-  - {name: 📲 Twitter(X), type: select, proxies: [🚀 默认代理, 🔯 香港故转, 🔯 台湾故转, 🔯 狮城故转, 🔯 美国故转, ♻️ 自动选择, 🌐 全部节点]}
+  - {name: 🕊️ Twitter(X), type: select, proxies: [🚀 默认代理, 🔯 香港故转, 🔯 台湾故转, 🔯 狮城故转, 🔯 美国故转, ♻️ 自动选择, 🌐 全部节点]}
   - {name: 👥 Facebook/Meta, type: select, proxies: [🚀 默认代理, 🔯 台湾故转, 🔯 日本故转, 🔯 香港故转, 🔯 狮城故转, 🔯 美国故转, ♻️ 自动选择, 🌐 全部节点]}
   - {name: 💬 WhatsApp, type: select, proxies: [🚀 默认代理, 🔯 台湾故转, 🔯 日本故转, 🔯 香港故转, 🔯 狮城故转, 🔯 美国故转, ♻️ 自动选择, 🌐 全部节点]}
   - {name: 🎵 TikTok, type: select, proxies: [🚀 默认代理, 🔯 日本故转, 🔯 台湾故转, 🔯 狮城故转, 🔯 美国故转, 🔯 香港故转, ♻️ 自动选择, 🌐 全部节点]}
@@ -130,8 +130,9 @@ proxy-groups:
 
   # 办公 & 购物 & 游戏
   - {name: 👨🏿‍💻 GitHub, type: select, proxies: [🚀 默认代理, ♻️ 自动选择, 🌐 全部节点, 直连]}
-  - {name: 🐬 OneDrive, type: select, proxies: [🚀 默认代理, 🌐 全部节点, 直连]}
-  - {name: 🪟 Microsoft, type: select, proxies: [🚀 默认代理, 🌐 全部节点, 直连]}
+  - {name: 🐬 OneDrive, type: select, proxies: [🚀 默认代理, 🔯 台湾故转, 🔯 香港故转, 🔯 狮城故转, 🔯 美国故转, ♻️ 自动选择, 🌐 全部节点, 直连]}
+  - {name: 🪟 Microsoft, type: select, proxies: [🚀 默认代理, 🔯 台湾故转, 🔯 香港故转, 🔯 狮城故转, 🔯 美国故转, ♻️ 自动选择, 🌐 全部节点, 直连]}
+  - {name: 🍎 Apple, type: select, proxies: [🚀 默认代理, 🔯 台湾故转, 🔯 香港故转, 🔯 狮城故转, 🔯 美国故转, ♻️ 自动选择, 🌐 全部节点, 直连]}
   - {name: 🛒 Amazon, type: select, proxies: [🚀 默认代理, 🔯 台湾故转, 🔯 香港故转, 🔯 狮城故转, 🔯 美国故转, ♻️ 自动选择, 🌐 全部节点, 直连]}
   - {name: 🎮 Steam, type: select, proxies: [直连, 🔯 日本故转, 🔯 台湾故转, 🔯 狮城故转, 🔯 美国故转, 🔯 香港故转, ♻️ 自动选择, 🌐 全部节点]}
   - {name: 💶 PayPal, type: select, proxies: [直连, 🔯 日本故转, 🔯 台湾故转, 🔯 狮城故转, 🔯 美国故转, 🔯 香港故转, ♻️ 自动选择, 🌐 全部节点]}
@@ -154,12 +155,12 @@ rules:
   # 基础直连 (高优先级)
   - RULE-SET,private_ip,直连,no-resolve
   - RULE-SET,private_domain,直连
-  # - IP-CIDR,IP地址/32,直连
+  - IP-CIDR,134.185.105.131/32,直连
   
   # AI 相关 (按需前置)
   - RULE-SET,openai,🤖 ChatGPT
-  - RULE-SET,anthropic_domain,🤖 Claude
-  - RULE-SET,gemini,♊ Gemini
+  - RULE-SET,anthropic_domain,👽 Claude
+  - RULE-SET,gemini,✨ Gemini
   - RULE-SET,perplexity,🟣 Perplexity
   - RULE-SET,grok,🗿 Grok
   - RULE-SET,meta_ai,♾️ Meta AI
@@ -172,11 +173,11 @@ rules:
   - RULE-SET,github_domain,👨🏿‍💻 GitHub
   - RULE-SET,onedrive_domain,🐬 OneDrive
   - RULE-SET,microsoft_domain,🪟 Microsoft
-  - RULE-SET,apple_domain,直连
+  - RULE-SET,apple_domain,🍎 Apple
   
   # 社交/短视频
   - RULE-SET,telegram_domain,📲 Telegram
-  - RULE-SET,twitter_domain,📲 Twitter(X)
+  - RULE-SET,twitter_domain,🕊️ Twitter(X)
   - RULE-SET,tiktok_domain,🎵 TikTok
   - RULE-SET,facebook_domain,👥 Facebook/Meta
   - RULE-SET,whatsapp_domain,💬 WhatsApp
@@ -186,7 +187,7 @@ rules:
   - RULE-SET,disney_domain,🏰 Disney
   - RULE-SET,hbo_domain,🎬 HBO
   - RULE-SET,spotify_domain,🎵 Spotify
-  - RULE-SET,twitch_domain,🟣 Twitch
+  - RULE-SET,twitch_domain,📺 Twitch
   
   # 购物/支付/游戏
   - RULE-SET,amazon_domain,🛒 Amazon
@@ -204,6 +205,7 @@ rules:
   - RULE-SET,cn_domain,直连
   - RULE-SET,cn_ip,直连,no-resolve
   - DOMAIN-SUFFIX,kstore.vip,直连
+  - DOMAIN-SUFFIX,nijigem.by,直连
   - DOMAIN-SUFFIX,battlenet.com.cn,直连
   - DOMAIN-SUFFIX,ctyun.cn,直连
   - DOMAIN-SUFFIX,chinaccs.cn,直连
