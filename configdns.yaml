@@ -155,7 +155,7 @@ rules:
   # 基础直连 (高优先级)
   - RULE-SET,private_ip,直连,no-resolve
   - RULE-SET,private_domain,直连
-  - IP-CIDR,134.185.105.131/32,直连
+  #- IP-CIDR,IP/32,直连
   
   # AI 相关 (按需前置)
   - RULE-SET,openai,🤖 ChatGPT
