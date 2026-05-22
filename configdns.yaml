@@ -34,26 +34,19 @@ profile:
   store-fake-ip: true
 
 sniffer:
-  enable: true                                                          # 启用嗅探  提升分流准确性
-  override-destination: true                                            # 成功解析  使用嗅探到的域名覆盖原始目标地址
-  parse-pure-ip: true                                                   # 反向解析  解析纯 IP 连接（尝试反向解析获得域名）
-  force-dns-mapping: true                                               # 强制映射  DNS 映射（对纯 IP 连接尝试 DNS 映射）
+  enable: true
   sniff:
-    QUIC: { ports: [443] }                                              # 嗅探参数  QUIC 协议流量（HTTP/3 常用端口）
-    TLS:  { ports: [443, 8443] }                                        # 嗅探参数  HTTPS（TLS）常用及备用端口
-    HTTP: { ports: [80, 8080-8880], override-destination: true }        # 嗅探参数  HTTP 及常见 Web / 代理端口段(嗅探成功后覆盖目标地址)
-  force-domain:
-    - "+.netflix.com"                                                   # 强制嗅探  Netflix 主域名
-    - "+.nflxvideo.net"                                                 # 强制嗅探  Netflix CDN
-    - "+.amazonaws.com"                                                 # 强制嗅探  AWS 云服务
-    - "+.media.dssott.com"                                              # 强制嗅探  Disney+ 流媒体
-    - "+.tiktok.com"                                                    # 强制嗅探  TikTok 流媒体
+    HTTP:
+      ports: [80, 8080-8880]
+      override-destination: true
+    TLS:
+      ports: [443, 8443]
+    QUIC:
+      ports: [443, 8443]
   skip-domain:
-    - Mijia Cloud                                                       # 跳过嗅探  米家云服务
-    - dlg.io.mi.com                                                     # 跳过嗅探  小米设备通信
-    - "+.oray.com"                                                      # 跳过嗅探  花生壳服务
-    - "+.sunlogin.net"                                                  # 跳过嗅探  向日葵远程控制
-    - "+.push.apple.com"                                                # 跳过嗅探  苹果推送服务
+    - "Mijia Cloud"
+    - "+.push.apple.com"
+    - "+.apple.com"
 
 tun:
   enable: true
