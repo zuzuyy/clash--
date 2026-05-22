@@ -45,6 +45,9 @@ sniffer:
       ports: [443, 8443]
   skip-domain:
     - "Mijia Cloud"
+    - "digilink.com.cn" # 常见的米家排除
+    - "+.local"        # 排除局域网
+    - "+.lan"
     - "+.push.apple.com"
     - "+.apple.com"
 
@@ -65,6 +68,12 @@ dns:
   enhanced-mode: fake-ip
   fake-ip-range: 28.0.0.1/8
   fake-ip-filter-mode: blacklist
+  fake-ip-filter:
+    - "rule-set:fakeipfilter_domain"
+    - "localhost"
+    - "*.lan"
+    - "*.local"
+    - "151777.xyz" # 替换为你自己的 Cloudflare Tunnel 域名
   
   default-nameserver:
     - 223.5.5.5
@@ -76,12 +85,12 @@ dns:
 
   # 默认解析器：仅保留海外加密 DNS，防止兜底请求泄露
   nameserver:
-    - https://8.8.8.8/dns-query#🚀 默认代理
-    - https://1.1.1.1/dns-query#🚀 默认代理
+    - https://8.8.8.8/dns-query#一键代理
+    - https://1.1.1.1/dns-query#一键代理
 
   # 策略分流：强制国内域名走国内 DNS，其余全部走上面的 nameserver
   nameserver-policy:
-    "geosite:cn,private":
+    "geosite:cn,private,apple,microsoft":
       - https://dns.alidns.com/dns-query#直连
       - https://doh.pub/dns-query#直连
     "rule-set:fakeipfilter_domain":
