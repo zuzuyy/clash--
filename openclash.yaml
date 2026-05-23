@@ -128,9 +128,9 @@ proxy-groups:
   - {name: ChatGPT,      <<: *Anchor_OP, icon: https://github.com/Seven1echo/Yaml/raw/main/icons/ChatGPT.png}
   - {name: Claude,       <<: *Anchor_OP, icon: https://github.com/Seven1echo/Yaml/raw/main/icons/Claude.png}
   - {name: Gemini,       <<: *Anchor_OP, icon: https://github.com/Seven1echo/Yaml/raw/main/icons/Gemini.png}
-  - {name: Grok,         <<: *Anchor_OP, icon: https://github.com/zuzuyy/clash--/blob/main/icons/Grok.png}
-  - {name: Meta,         <<: *Anchor_OP, icon: https://github.com/zuzuyy/clash--/blob/main/icons/Meta.png}
-  - {name: Perplexity,   <<: *Anchor_OP, icon: https://github.com/zuzuyy/clash--/blob/main/icons/Perplexity.png}
+  - {name: Grok,         <<: *Anchor_OP, icon: https://raw.githubusercontent.com/zuzuyy/clash--/refs/heads/main/icons/Grok.png}
+  - {name: Meta,         <<: *Anchor_OP, icon: https://raw.githubusercontent.com/zuzuyy/clash--/refs/heads/main/icons/Meta.png}
+  - {name: Perplexity,   <<: *Anchor_OP, icon: https://raw.githubusercontent.com/zuzuyy/clash--/refs/heads/main/icons/Perplexity.png}
   - {name: YouTube,      <<: *Anchor_OP, icon: https://github.com/Seven1echo/Yaml/raw/main/icons/YouTube.png}
   - {name: Google,       <<: *Anchor_OP, icon: https://github.com/Seven1echo/Yaml/raw/main/icons/Google.png}
   - {name: GitHub,       <<: *Anchor_OP, icon: https://github.com/Seven1echo/Yaml/raw/main/icons/GitHub.png}
