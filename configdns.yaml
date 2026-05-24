@@ -45,6 +45,9 @@ sniffer:
       ports: [443, 8443]
   skip-domain:
     - "Mijia Cloud"
+    - "digilink.com.cn" # 常见的米家排除
+    - "+.local"        # 排除局域网
+    - "+.lan"
     - "+.push.apple.com"
     - "+.apple.com"
 
