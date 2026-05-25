@@ -48,8 +48,6 @@ sniffer:
     - "digilink.com.cn" # 常见的米家排除
     - "+.local"        # 排除局域网
     - "+.lan"
-    - "+.push.apple.com"
-    - "+.apple.com"
 
 tun:
   enable: true
@@ -73,8 +71,7 @@ dns:
     - "localhost"
     - "*.lan"
     - "*.local"
-    - "151777.xyz" # 替换为你自己的 Cloudflare Tunnel 域名
-  
+    
   default-nameserver:
     - 223.5.5.5
     - 119.29.29.29
@@ -90,11 +87,13 @@ dns:
 
   # 策略分流：强制国内域名走国内 DNS，其余全部走上面的 nameserver
   nameserver-policy:
-    "geosite:cn,private,apple,microsoft":
-      - https://dns.alidns.com/dns-query#直连
-      - https://doh.pub/dns-query#直连
+    "geosite:cn":
+      - https://dns.alidns.com/dns-query#国内直连
+      - https://doh.pub/dns-query#国内直连
+    "geosite:private":
+      - https://dns.alidns.com/dns-query#国内直连
     "rule-set:fakeipfilter_domain":
-      - https://dns.alidns.com/dns-query#直连
+      - https://dns.alidns.com/dns-query#国内直连
     "geosite:category-ads-all": rcode://success
   
 # ══ 订阅锚点 ══
