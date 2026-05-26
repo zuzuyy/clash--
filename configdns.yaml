@@ -49,8 +49,7 @@ sniffer:
     - "+.local"        # 排除局域网
     - "+.lan"
     - "+.push.apple.com"
-    - "+.apple.com"
-
+    
 tun:
   enable: true
   stack: mixed
