@@ -1,12 +1,13 @@
 /***
  * Clash Verge Rev 全局扩展脚本（懒人配置）/ Mihomo Party 覆写脚本
  * URL: https://gist.github.com/dahaha-365/0b8beb613f8d1ee656fe1f21e1a07959
+ * 优化版：修复地区正则、其他节点引用等问题
  */
 
 /**
  * 整个脚本的总开关，在Mihomo Party使用的话，请保持为true
- * true = 启用
- * false = 禁用
+ * true = 启用（所有修改生效）
+ * false = 禁用（完全不修改原配置）
  */
 const enable = true;
 
@@ -107,13 +108,13 @@ const regionOptions = {
     },
     {
       name: "MY马来西亚",
-      regex: /马来|🇩🇪|my|malaysia/i,
+      regex: /马来|🇲🇾|my|malaysia/i,         // 修正：国旗改为🇲🇾，原为德国国旗
       ratioLimit: 2,
       icon: "https://fastly.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/Malaysia.png",
     },
     {
       name: "TK土耳其",
-      regex: /土耳其|🇹🇷|tk|turkey/i,
+      regex: /土耳其|🇹🇷|tr|turkey/i,          // 修正：国家代码 tr，原为 tk
       ratioLimit: 2,
       icon: "https://fastly.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/Turkey.png",
     },
@@ -188,6 +189,11 @@ const rules = ["RULE-SET,applications,下载软件"];
 
 // 程序入口
 function main(config) {
+  // 总开关：如果禁用，直接返回原始配置，不做任何修改
+  if (!enable) {
+    return config;
+  }
+
   const proxyCount = config?.proxies?.length ?? 0;
   const proxyProviderCount =
     typeof config?.["proxy-providers"] === "object"
@@ -272,39 +278,26 @@ function main(config) {
     server: "cn.ntp.org.cn",
   };
 
-  /**
-   * 总开关关闭时不处理策略组
-   */
-  if (!enable) {
-    return config;
-  }
-
+  // 处理地区分组（根据节点名称正则匹配，并排除高倍率节点）
   regionOptions.regions.forEach((region) => {
     /**
      * 提取倍率符合要求的代理节点
-     * 判断倍率有问题的话，大概率是这个正则的问题，可以自行修改
-     * 自己改正则的话记得必须把倍率的number值提取出来
+     * 倍率通常写在节点名称中，如“2x”、“3.5x”等
      */
     let proxies = config.proxies
       .filter((a) => {
-        const multiplier =
-          /(?<=[xX✕✖⨉倍率])([1-9]+(\.\d+)*|0{1}\.\d+)(?=[xX✕✖⨉倍率])*/i.exec(
-            a.name
-          )?.[1];
+        // 优化后的倍率提取正则：匹配数字（整数或小数）前有 x/X/✕/✖/⨉/倍率
+        const multiplierMatch = /(?<=[xX✕✖⨉倍率])(\d+(?:\.\d+)?)/i.exec(a.name);
+        const multiplier = multiplierMatch ? multiplierMatch[1] : null;
         return (
           a.name.match(region.regex) &&
-          parseFloat(multiplier || "0") <= region.ratioLimit
+          (!multiplier || parseFloat(multiplier) <= region.ratioLimit)
         );
       })
       .map((b) => {
         return b.name;
       });
 
-    /**
-     * 必须再判断一下有没有符合要求的代理节点
-     * 没有的话，这个策略组就不应该存在
-     * 我喜欢自动选择延迟最低的节点，喜欢轮询的可以自己修改
-     */
     if (proxies.length > 0) {
       regionProxyGroups.push({
         ...groupBaseOption,
@@ -684,14 +677,26 @@ function main(config) {
   config["rules"] = rules;
   config["rule-providers"] = Object.fromEntries(ruleProviders);
 
+  // 如果存在未匹配到任何地区的节点，创建“其他节点”组，并将其加入到上层策略组中
   if (otherProxyGroups.length > 0) {
+    const otherGroupName = "其他节点";
     config["proxy-groups"].push({
       ...groupBaseOption,
-      name: "其他节点",
+      name: otherGroupName,
       type: "select",
       proxies: otherProxyGroups,
       icon: "https://fastly.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/World_Map.png",
     });
+
+    // 将“其他节点”添加到“默认节点”、“其他外网”、“国内网站”等主要策略组的可选列表中
+    const parentGroups = ["默认节点", "其他外网", "国内网站"];
+    for (const group of config["proxy-groups"]) {
+      if (parentGroups.includes(group.name)) {
+        if (!group.proxies.includes(otherGroupName)) {
+          group.proxies.push(otherGroupName);
+        }
+      }
+    }
   }
 
   // 返回修改后的配置
