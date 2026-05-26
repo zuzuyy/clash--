@@ -1,7 +1,7 @@
 /***
  * Clash Verge Rev 全局扩展脚本（懒人配置）/ Mihomo Party 覆写脚本
  * URL: https://gist.github.com/dahaha-365/0b8beb613f8d1ee656fe1f21e1a07959
- * 优化版：修复地区正则、其他节点引用等问题
+ * 优化版：修复地区正则、其他节点引用，增加 GitHub 独立策略组及图标
  */
 
 /**
@@ -41,6 +41,7 @@ const ruleOptions = {
   japan: true, // 日本网站策略组
   tracker: true, // 网络分析和跟踪服务
   ads: true, // 常见的网络广告
+  github: true, // GitHub（新增）
 };
 
 /**
@@ -108,13 +109,13 @@ const regionOptions = {
     },
     {
       name: "MY马来西亚",
-      regex: /马来|🇲🇾|my|malaysia/i,         // 修正：国旗改为🇲🇾，原为德国国旗
+      regex: /马来|🇲🇾|my|malaysia/i,
       ratioLimit: 2,
       icon: "https://fastly.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/Malaysia.png",
     },
     {
       name: "TK土耳其",
-      regex: /土耳其|🇹🇷|tr|turkey/i,          // 修正：国家代码 tr，原为 tk
+      regex: /土耳其|🇹🇷|tr|turkey/i,
       ratioLimit: 2,
       icon: "https://fastly.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/Turkey.png",
     },
@@ -185,6 +186,7 @@ ruleProviders.set("applications", {
   path: "./ruleset/DustinWin/applications.list",
 });
 
+// 初始规则（注意：之后会添加更多规则，包括 github 规则）
 const rules = ["RULE-SET,applications,下载软件"];
 
 // 程序入口
@@ -286,7 +288,6 @@ function main(config) {
      */
     let proxies = config.proxies
       .filter((a) => {
-        // 优化后的倍率提取正则：匹配数字（整数或小数）前有 x/X/✕/✖/⨉/倍率
         const multiplierMatch = /(?<=[xX✕✖⨉倍率])(\d+(?:\.\d+)?)/i.exec(a.name);
         const multiplier = multiplierMatch ? multiplierMatch[1] : null;
         return (
@@ -336,6 +337,23 @@ function main(config) {
     type: "direct",
     udp: true,
   });
+
+  // ========== 新增 GitHub 策略组（带图标） ==========
+  if (ruleOptions.github) {
+    // 创建 GitHub 策略组，默认引用「默认节点」及所有可用节点
+    const githubGroup = {
+      ...groupBaseOption,
+      name: "GitHub",
+      type: "select",
+      proxies: ["默认节点", ...proxyGroupsRegionNames, "直连"],
+      icon: "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/GitHub.png",
+    };
+    config["proxy-groups"].push(githubGroup);
+    // 添加 GitHub 域名规则，指向该策略组
+    rules.unshift("DOMAIN-SUFFIX,github.com,GitHub");
+    rules.unshift("DOMAIN-SUFFIX,githubusercontent.com,GitHub");
+  }
+  // ================================================
 
   if (ruleOptions.openai) {
     rules.push(
