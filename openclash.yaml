@@ -131,7 +131,7 @@ proxy-groups:
   - {name: Twitter(X),   <<: *Anchor_OP, icon: https://github.com/Seven1echo/Yaml/raw/main/icons/Twitter.png}
   - {name: Telegram,     <<: *Anchor_OP, icon: https://github.com/Seven1echo/Yaml/raw/main/icons/Telegram.png}
   - {name: Netflix,      <<: *Anchor_OP, icon: https://github.com/Seven1echo/Yaml/raw/main/icons/Netflix.png}
-  - {name: Disney,       <<: *Anchor_OP, icon: https://raw.githubusercontent.com/zuzuyy/clash--/refs/heads/main/icons/Disney.png}
+  - {name: Disney,       <<: *Anchor_OP, icon: https://raw.githubusercontent.com/zuzuyy/clash--/refs/heads/main/icons/Disney+.png}
   - {name: Spotify,      <<: *Anchor_OP, icon: https://github.com/Seven1echo/Yaml/raw/main/icons/Spotify.png} 
   - {name: PayPal,       <<: *Anchor_OP, icon: https://github.com/Seven1echo/Yaml/raw/main/icons/PayPal.png}
   - {name: Speedtest,    <<: *Anchor_OP, icon: https://raw.githubusercontent.com/zuzuyy/clash--/refs/heads/main/icons/Speedtest.png}
