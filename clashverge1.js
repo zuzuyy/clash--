@@ -280,7 +280,7 @@ if (regionSet === 'all') {
 
 const dnsConfig = {
   enable: !!dns,
-  listen: '0.0.0.0:53',
+  listen: '0.0.0.0:1053',
   ipv6: !!ipv6,
   'log-level': logLevel,
   'prefer-h3': true,
@@ -598,8 +598,13 @@ function main(config) {
   config['allow-lan'] = true
   config['bind-address'] = '*'
   config['mode'] = 'rule'
-  config['ipv6'] = ipv6
-  config['external-controller'] = '0.0.0.0:9090'
+  config['ipv6'] = !!ipv6
+  config['external-controller'] = '127.0.0.1:9090'
+  config['external-controller-cors'] = {
+    'allow-origins': ['*'],
+    'allow-private-network': true,
+  }
+  config['secret'] = 'YaNet'
   config['port'] = 7890
   config['socks-port'] = 7891
   config['mixed-port'] = 7892
