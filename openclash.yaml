@@ -169,6 +169,12 @@ proxy-groups:
 rules:
   - RULE-SET,private_domain,国内直连                                     # Private
   - RULE-SET,private_ip,国内直连,no-resolve                              # Private
+  - DOMAIN-SUFFIX,eastmoney.com,国内直连
+  - DOMAIN-SUFFIX,10jqka.com.cn,国内直连
+  - DOMAIN-SUFFIX,gtimg.cn,国内直连
+  - DOMAIN-SUFFIX,qq.com,国内直连
+  - DOMAIN-SUFFIX,dfcfs.com,国内直连
+  - DOMAIN-SUFFIX,finance.sina.com.cn,国内直连
   - RULE-SET,openai_domain,ChatGPT                                      # ChatGPT
   - RULE-SET,anthropic_domain,Claude                                    # Claude
   - RULE-SET,google-gemini_domain,Gemini                                # Gemini
